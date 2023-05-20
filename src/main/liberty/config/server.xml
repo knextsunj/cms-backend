@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="new server">
+
+    <featureManager>
+        <feature>servlet-4.0</feature>
+        <feature>springBoot-2.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint"
+                  host="*"
+                  httpPort="9080"
+                  httpsPort="9443" />
+
+    <springBootApplication id="cms"
+                           location="thin-cms-0.1.0.jar"
+                           name="cms" />
+    <webContainer com.ibm.ws.webcontainer.invokeflushafterservice="false"/>
+</server>

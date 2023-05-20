@@ -1,0 +1,46 @@
+package com.github.knextsunj.cms.mapper;
+
+import com.github.knextsunj.cms.domain.City;
+import com.github.knextsunj.cms.domain.State;
+import com.github.knextsunj.cms.dto.CityDTO;
+import com.github.knextsunj.cms.dto.StateDTO;
+import com.github.knextsunj.cms.util.CmsUtil;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
+
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+public abstract class CityMapper {
+
+    public City fromCityDTO(CityDTO cityDTO) {
+        City city = new City();
+        city.setName(cityDTO.name());
+        if(!CmsUtil.isNull(cityDTO.deleted())) {
+            city.setDeleted(cityDTO.deleted());
+        }
+        return city;
+    }
+
+
+    public CityDTO toCityDTO(City city) {
+        Long stateId=null;
+        if(Optional.ofNullable(city.getState()).isPresent()) {
+            stateId = city.getState().getId();
+        }
+        return new CityDTO(city.getId(), city.getName(),city.getDeleted(),stateId,city.getState().getName());
+    }
+
+    public City setDates(City city) {
+        if (Optional.ofNullable(city).isPresent()) {
+            if (Objects.isNull(city.getCreatedDate())) {
+                city.setCreatedDate(LocalDateTime.now());
+            }
+            city.setUpdatedDate(LocalDateTime.now());
+
+        }
+        return city;
+    }
+}
