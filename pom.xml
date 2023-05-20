@@ -135,10 +135,6 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.auto.value</groupId>
             <artifactId>auto-value</artifactId>
             <version>${auto.value.version}</version>
