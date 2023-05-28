@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>Development</id>
+            <repositories>
+               <repository>
+                    <id>maven-central</id>
+                    <name>Apache Maven Central</name>
+ <!--                    <url>https://repo.maven.apache.org/maven2/</url>
+-->					<url>https://repo1.maven.org/maven2/</url>
+                </repository>
+               <repository>
+                    <id>jboss</id>
+                    <name>JBoss</name>
+                    <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+                </repository>
+                       <repository>
+          <id>sonatype</id>
+          <name>OSS Sonatype</name>
+          <url>https://oss.sonatype.org/content/repositories/public/</url>
+        </repository>
+              <repository>
+          <id>bintray</id>
+          <name>JCenter Bintray</name>
+          <url>https://jcenter.bintray.com/</url>
+        </repository>
+
+       	    </repositories>
+       </profile>
+    </profiles>
+
+
+    <activeProfiles>
+        <activeProfile>Development</activeProfile>
+    </activeProfiles>
+
+</settings>
