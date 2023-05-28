@@ -82,7 +82,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<AddressDTO> fetchAllAddress(Long customerId) {
         if (!CmsUtil.isNull(customerId)) {
-            return addressRepository.findAddressByCustomerId(customerId).stream().map((address) -> {
+            return addressRepository.findAddressByCustomerIdAndDeleted(customerId,"N").stream().map((address) -> {
                 return addressMapper.toAddressDTO(address);
             }).collect(Collectors.toList());
         } else {

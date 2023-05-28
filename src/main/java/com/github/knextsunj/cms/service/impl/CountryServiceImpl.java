@@ -55,15 +55,13 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public boolean updateCountry(CountryDTO countryDTO) {
         if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.id())) {
-            if (countryRepository.count()!=0L && !genericValidationService.deDup(countryDTO.name())) {
-                throw new ValidationFailureException("Country with given name: " + countryDTO.name() + "already exists");
-            }
             Optional<Country> countryOptional = countryRepository.findById(countryDTO.id());
             if (countryOptional.isPresent()) {
                 Country country = countryOptional.get();
                 if (!CmsUtil.isNull(countryDTO.deleted()) && countryDTO.deleted().equals("Y")) {
                     country.setDeleted("Y");
                 }
+                if(!CmsUtil.isNull(countryDTO.name()))
                 country.setName(countryDTO.name());
                 Country updatedCountry = countryRepository.save(countryMapper.setDates(country));
                 if (updatedCountry != null)
@@ -77,7 +75,7 @@ public class CountryServiceImpl implements CountryService {
     public List<CountryResponseDTO> findAllCountries() {
         serialNumberThreadLocal.set(0L);
         List<CountryResponseDTO> countryResponseDTOList =
-                countryRepository.findAllCountries().stream().map(country -> {
+                countryRepository.findAllCountriesByDeleted("N").stream().map(country -> {
                     return countryMapper.buildCountryResponseDTO(countryMapper.toCountryDTO(country), SerialNumberCalculator.calculateAndGiveSerialNo(serialNumberThreadLocal).get());
                 }).collect(Collectors.toList());
         return countryResponseDTOList;

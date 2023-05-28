@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CityRepository extends JpaRepository<City, Long> {
 
-    List<City> findCityByStateId(Long stateId);
+    List<City> findCityByStateIdAndDeleted(Long stateId,String deleted);
 
     City findCityByName(String name);
 }

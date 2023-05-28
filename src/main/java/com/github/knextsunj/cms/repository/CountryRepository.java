@@ -11,5 +11,5 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
 
     Country findByName(String name);
 
-    List<Country> findAllCountries();
+    List<Country> findAllCountriesByDeleted(String deleted);
 }

@@ -11,6 +11,6 @@ public interface CustomerStatusRepository extends JpaRepository<CustomerStatus,L
 
     CustomerStatus findCustomerStatusByName(String name);
 
-    List<CustomerStatus> findAllCustomerStatus();
+    List<CustomerStatus> findAllCustomerStatusByDeleted(String deleted);
 
 }

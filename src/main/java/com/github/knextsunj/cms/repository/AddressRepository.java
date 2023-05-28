@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
-    List<Address> findAddressByCustomerId(Long customerId);
+    List<Address> findAddressByCustomerIdAndDeleted(Long customerId,String deleted);
 }

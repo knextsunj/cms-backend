@@ -15,7 +15,7 @@ open class CustomerStatusValidationServiceImpl:GenericValidationService {
     open lateinit var customerStatusRepository: CustomerStatusRepository
 
     override fun deDup(name: String?): Boolean? {
-        var customerStatus: CustomerStatus = customerStatusRepository.findCustomerStatusByName(name);
+        var customerStatus: CustomerStatus? = customerStatusRepository.findCustomerStatusByName(name);
         return CmsUtil.isNull(customerStatus);
 
     }

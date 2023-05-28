@@ -73,7 +73,9 @@ public class StateServiceImpl implements StateService {
 			Optional<State> optionalState = stateRepository.findById(stateDTO.id());
 			if(optionalState.isPresent()) {
 				State state = optionalState.get();
-				state.setName(stateDTO.name());
+				if(!CmsUtil.isNull(stateDTO.name())) {
+					state.setName(stateDTO.name());
+				}
 				if(!CmsUtil.isNull(stateDTO.deleted()) && stateDTO.deleted().equals("Y")) {
 					state.setDeleted(stateDTO.deleted());
 				}
@@ -88,7 +90,7 @@ public class StateServiceImpl implements StateService {
 	@Override
 	public List<StateDTO> findStatesByCountryId(Long countryId) {
 		if (Optional.ofNullable(countryId).isPresent()) {
-			List<State> states = this.stateRepository.findStateByCountryId(countryId);
+			List<State> states = this.stateRepository.findStateByCountryIdAndDeleted(countryId,"N");
 
 			return states.stream().map(state -> {
 				return stateMapper.toStateDTO(state);

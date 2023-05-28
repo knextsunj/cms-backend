@@ -15,7 +15,7 @@ open class CityValidationServiceImpl : GenericValidationService {
     open lateinit var cityRepository: CityRepository
 
     override fun deDup(name: String?): Boolean? {
-        var city: City = cityRepository.findCityByName(name);
+        var city: City? = cityRepository.findCityByName(name);
         return CmsUtil.isNull(city);
     }
 

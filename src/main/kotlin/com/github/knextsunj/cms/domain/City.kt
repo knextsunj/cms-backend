@@ -7,8 +7,8 @@ import javax.persistence.*
 @Entity
 @Table(name = "city")
 @NamedQuery(
-    name = "city.findCityByStateId",
-    query = "select city from City city JOIN FETCH city.state where city.state.id=:stateId and city.deleted='N'"
+    name = "city.findCityByStateIdAndDeleted",
+    query = "select city from City city JOIN FETCH city.state where city.state.id=:stateId and city.deleted=:deleted"
 )
 @NamedQuery(name = "city.findCityByName", query = "select city from City city where city.name=:name")
 @DynamicUpdate

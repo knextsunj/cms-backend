@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "customer_status")
 @NamedQueries(
     NamedQuery(name = "CustomerStatus.findCustomerStatusByName", query = "select customerstatus from CustomerStatus customerstatus where customerstatus.name=:name"),
-    NamedQuery(name = "CustomerStatus.findAllCustomerStatus", query = "select customerstatus from CustomerStatus customerstatus where customerstatus.deleted='N'")
+    NamedQuery(name = "CustomerStatus.findAllCustomerStatusByDeleted", query = "select customerstatus from CustomerStatus customerstatus where customerstatus.deleted=:deleted")
 )
 @DynamicUpdate
 open class CustomerStatus {

@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "address_type")
 @NamedQueries(
     NamedQuery(name = "AddressType.findAddressTypeByName", query = "select addresstype from AddressType addresstype where addresstype.name=:name"),
-    NamedQuery(name = "AddressType.findAllAddressTypes", query = "select addresstype from AddressType addresstype where addresstype.deleted='N'")
+    NamedQuery(name = "AddressType.findAllAddressTypesByDeleted", query = "select addresstype from AddressType addresstype where addresstype.deleted=:deleted")
 )
 @DynamicUpdate
 open class AddressType {

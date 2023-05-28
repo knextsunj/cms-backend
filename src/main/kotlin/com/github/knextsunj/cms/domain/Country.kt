@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "country")
 @NamedQueries(
     NamedQuery(name = "Country.findByName", query = "select country from Country country where country.name=:name"),
-    NamedQuery(name = "Country.findAllCountries", query= "select country from Country country where country.deleted='N'")
+    NamedQuery(name = "Country.findAllCountriesByDeleted", query= "select country from Country country where country.deleted=:deleted")
 )
 @DynamicUpdate
 open class Country {

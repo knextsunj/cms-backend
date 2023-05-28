@@ -70,7 +70,9 @@ public class CityServiceImpl implements CityService {
             Optional<City> optionalCity = cityRepository.findById(cityDTO.id());
             if(optionalCity.isPresent()) {
                 City city = optionalCity.get();
-                city.setName(cityDTO.name());
+                if(!CmsUtil.isNull(cityDTO.name())){
+                    city.setName(cityDTO.name());
+                }
                 if(!CmsUtil.isNull(cityDTO.deleted()) && cityDTO.deleted().equals("Y")) {
                     city.setDeleted(cityDTO.deleted());
                 }
@@ -85,7 +87,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDTO> findCitiesByStateId(Long stateId) {
         if (Optional.ofNullable(stateId).isPresent()) {
-            List<City> cities = this.cityRepository.findCityByStateId(stateId);
+            List<City> cities = this.cityRepository.findCityByStateIdAndDeleted(stateId,"N");
 
             return cities.stream().map(state -> {
                 return cityMapper.toCityDTO(state);

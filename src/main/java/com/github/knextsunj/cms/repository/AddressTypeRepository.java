@@ -11,5 +11,5 @@ public interface AddressTypeRepository extends JpaRepository<AddressType,Long> {
 
     AddressType findAddressTypeByName(String name);
 
-    List<AddressType> findAllAddressTypes();
+    List<AddressType> findAllAddressTypesByDeleted(String deleted);
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StateRepository extends JpaRepository<State, Long> {
 
-	List<State> findStateByCountryId(Long countryId);
+	List<State> findStateByCountryIdAndDeleted(Long countryId,String deleted);
 	
 	State findStateByName(String name);
 }

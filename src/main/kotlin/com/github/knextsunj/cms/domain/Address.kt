@@ -7,8 +7,8 @@ import javax.persistence.*
 @Entity
 @Table(name = "address")
 @NamedQuery(
-    name = "Address.findAddressByCustomerId",
-    query = "select address from Address address JOIN FETCH address.customer where address.customer.id=:customerId and address.deleted='N'"
+    name = "Address.findAddressByCustomerIdAndDeleted",
+    query = "select address from Address address JOIN FETCH address.customer where address.customer.id=:customerId and address.deleted=:deleted"
 )
 @DynamicUpdate
 open class Address {

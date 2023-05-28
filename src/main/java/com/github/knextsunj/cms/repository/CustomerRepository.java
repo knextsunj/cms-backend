@@ -11,5 +11,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Customer findByName(String name);
 
-    List<Customer> findAllByActiveStatus();
+    List<Customer> findAllByActiveStatusAndDeleted(String activeStatus,String deleted);
 }

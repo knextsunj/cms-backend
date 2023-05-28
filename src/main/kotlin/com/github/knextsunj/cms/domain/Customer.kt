@@ -1,6 +1,7 @@
 package com.github.knextsunj.cms.domain
 
 import org.hibernate.annotations.DynamicUpdate
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -8,7 +9,7 @@ import javax.persistence.*
 @Table(name = "customer")
 @NamedQueries(
     NamedQuery(name = "Customer.findByName", query = "select customer from Customer customer where customer.name=:name"),
-    NamedQuery(name = "Customer.findAllByActiveStatus", query = "select customer from Customer customer where customer.customerStatus.name='ACTIVE' and customer.deleted='N'")
+    NamedQuery(name = "Customer.findAllByActiveStatusAndDeleted", query = "select customer from Customer customer JOIN FETCH customer.customerStatus where customer.customerStatus.name=:activeStatus and customer.deleted=:deleted")
 )
 @DynamicUpdate
 open class Customer {
@@ -25,7 +26,7 @@ open class Customer {
 
 
     @Column(name = "dob")
-    open var dateOfBirth: LocalDateTime? = null;
+    open var dateOfBirth: LocalDate? = null;
 
     @Column(name = "gender")
     open var gender: String? = null;

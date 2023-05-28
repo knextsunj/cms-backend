@@ -14,7 +14,7 @@ open class AddressTypeValidationServiceImpl:GenericValidationService {
     open lateinit var addressTypeRepository: AddressTypeRepository
 
     override fun deDup(name: String?): Boolean? {
-        var addressType: AddressType = addressTypeRepository.findAddressTypeByName(name)
+        var addressType: AddressType? = addressTypeRepository.findAddressTypeByName(name)
         return CmsUtil.isNull(addressType)
 
     }

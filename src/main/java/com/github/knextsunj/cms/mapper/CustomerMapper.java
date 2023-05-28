@@ -1,6 +1,7 @@
 package com.github.knextsunj.cms.mapper;
 
 import com.github.knextsunj.cms.domain.Customer;
+import com.github.knextsunj.cms.domain.CustomerStatus;
 import com.github.knextsunj.cms.dto.CustomerDTO;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -21,7 +22,8 @@ public interface CustomerMapper {
     @Mapping(target = "gender", source = "gender")
     @Mapping(target = "mobileNo", source = "mobileNo")
     @Mapping(target = "emailAddress", source = "emailAddress")
-    CustomerDTO  toCustomerDTO(Customer customer);
+    @Mapping(target="customerStatusDescr", source="customerStatus.name")
+    CustomerDTO toCustomerDTO(Customer customer);
 
     @InheritInverseConfiguration
     Customer fromCustomerDTO(CustomerDTO customerDTO);
@@ -36,6 +38,4 @@ public interface CustomerMapper {
         }
         return customer;
     }
-
-
 }

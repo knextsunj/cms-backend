@@ -54,16 +54,15 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     @Override
     public boolean updateAddressType(AddressTypeDTO addressTypeDTO) {
         if (Optional.ofNullable(addressTypeDTO).isPresent() && CmsUtil.isNumPresent(addressTypeDTO.id())) {
-            if (addressTypeRepository.count()!=0L  && !genericValidationService.deDup(addressTypeDTO.name())) {
-                throw new ValidationFailureException("Address Type with given name: " + addressTypeDTO.name() + "already exists");
-            }
             Optional<AddressType> addressTypeOptional = addressTypeRepository.findById(addressTypeDTO.id());
             if (addressTypeOptional.isPresent()) {
                 AddressType addressType = addressTypeOptional.get();
                 if (!CmsUtil.isNull(addressTypeDTO.deleted()) && addressTypeDTO.deleted().equals("Y")) {
                     addressType.setDeleted("Y");
                 }
-                addressType.setName(addressTypeDTO.name());
+                if(!CmsUtil.isNull(addressTypeDTO.name())) {
+                    addressType.setName(addressTypeDTO.name());
+                }
                 AddressType updatedAddressType = addressTypeRepository.save(addressTypeMapper.setDates(addressType));
                 if (updatedAddressType != null)
                     return true;
@@ -77,7 +76,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
         Function<AddressType,AddressTypeDTO> function = (addressType)->{
             return addressTypeMapper.toAddressTypeDTO(addressType);
         };
-        return addressTypeRepository.findAllAddressTypes().stream().map(function).collect(Collectors.toList());
+        return addressTypeRepository.findAllAddressTypesByDeleted("N").stream().map(function).collect(Collectors.toList());
     }
 
     @Override

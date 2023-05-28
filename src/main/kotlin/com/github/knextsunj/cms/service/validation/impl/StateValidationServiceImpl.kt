@@ -15,7 +15,7 @@ open class StateValidationServiceImpl:GenericValidationService {
     open lateinit var stateRepository: StateRepository
 	
 	override fun deDup(name: String?): Boolean? {
-	        var state: State = stateRepository.findStateByName(name);
+	        var state: State? = stateRepository.findStateByName(name);
         return CmsUtil.isNull(state);	
 	}	
 	

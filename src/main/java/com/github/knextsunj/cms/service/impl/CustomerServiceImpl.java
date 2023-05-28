@@ -12,6 +12,7 @@ import com.github.knextsunj.cms.service.CustomerService;
 import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
+import com.github.knextsunj.cms.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,10 +41,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO) {
         if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.name())) {
-            if (customerRepository.count()!=0L && !genericValidationService.deDup(customerDTO.name())) {
+            if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.name())) {
                 throw new ValidationFailureException("Customer with given name: " + customerDTO.name() + " already registered");
             }
-            Customer savedCustomer = customerRepository.save(customerMapper.setDates(customerMapper.fromCustomerDTO(customerDTO)));
+            CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName(customerDTO.customerStatusDescr());
+            Customer newCustomer = customerMapper.setDates(customerMapper.fromCustomerDTO(customerDTO));
+            newCustomer.setCustomerStatus(customerStatus);
+            Customer savedCustomer = customerRepository.save(newCustomer);
             if (!CmsUtil.isNull(savedCustomer)) {
                 return true;
             }
@@ -55,9 +59,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO) {
         if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.id())) {
-            if (customerRepository.count()!=0L && !genericValidationService.deDup(customerDTO.name())) {
-                throw new ValidationFailureException("Customer with given name: " + customerDTO.name() + "already exists");
-            }
             Optional<Customer> customerOptional = customerRepository.findById(customerDTO.id());
             if (customerOptional.isPresent()) {
                 Customer customer = customerOptional.get();
@@ -65,14 +66,17 @@ public class CustomerServiceImpl implements CustomerService {
                     customer.setDeleted("Y");
                 }
 
-                if (customerDTO.customerStatusDescr().equals("INACTIVE")) {
+                if (!CmsUtil.isNull(customerDTO.customerStatusDescr()) && customerDTO.customerStatusDescr().equals("INACTIVE")) {
                     CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName("INACTIVE");
                     if (CmsUtil.isNull(customerStatus)) {
                         customer.setCustomerStatus(customerStatus);
                     }
                 }
-                customer.setName(customerDTO.name());
-                Customer updatedCustomer = customerRepository.save(customerMapper.setDates(customer));
+                if (!CmsUtil.isNull(customerDTO.name())) {
+                    customer.setName(customerDTO.name());
+                }
+
+                Customer updatedCustomer = customerRepository.save(customerMapper.setDates(MapperUtil.updateCustomerDetails(customerDTO,customer)));
                 if (updatedCustomer != null)
                     return true;
             }
@@ -82,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDTO> findAllCustomers() {
-        return customerRepository.findAllByActiveStatus().stream().map(customer -> {
+        return customerRepository.findAllByActiveStatusAndDeleted("ACTIVE", "N").stream().map(customer -> {
             return customerMapper.toCustomerDTO(customer);
         }).collect(Collectors.toList());
     }
