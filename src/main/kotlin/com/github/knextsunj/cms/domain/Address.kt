@@ -17,9 +17,6 @@ open class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Long? = 0;
 
-    @Column(name = "name")
-    open var name: String? = null;
-
     @Column(name = "is_deleted", insertable = false)
     open var deleted: String? = null
 
@@ -60,5 +57,4 @@ open class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     open var customer: Customer? = null
-
 }

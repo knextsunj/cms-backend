@@ -110,7 +110,6 @@ open class MapperUtil {
             /**
              * The safe call(?) operator checks if addressDTO is null,if yes then null is assigned to address.name
              */
-            address.name = addressDTO?.name
             address.deleted = addressDTO?.deleted
             address.street = addressDTO?.street
             address.locality = addressDTO?.locality

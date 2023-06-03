@@ -11,7 +11,6 @@ import org.mapstruct.MappingConstants;
 public interface AddressMapper {
 
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
     @Mapping(target = "deleted", source = "deleted")
     @Mapping(target = "street", source = "street")
     @Mapping(target = "locality", source = "locality")

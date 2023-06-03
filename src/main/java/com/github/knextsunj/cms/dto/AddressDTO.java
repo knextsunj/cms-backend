@@ -2,7 +2,7 @@ package com.github.knextsunj.cms.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record AddressDTO(@JsonProperty("id") Long id, @JsonProperty("name") String name,
+public record AddressDTO(@JsonProperty("id") Long id,
                          @JsonProperty("deleted") String deleted,
                          @JsonProperty("street") String street, @JsonProperty("locality") String locality,
                          @JsonProperty("area") String area,
