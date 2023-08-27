@@ -12,6 +12,10 @@ import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.MapperUtil;
 import com.github.knextsunj.cms.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -46,6 +50,7 @@ public class AddressServiceImpl implements AddressService {
     private ValidationUtil validationUtil;
 
     @Override
+    @CacheEvict(cacheNames = "allAddresses",allEntries = true)
     public boolean saveAddress(AddressDTO addressDTO) {
 
         if (validationUtil.checkAddressParams(addressDTO)) {
@@ -57,6 +62,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+//    @Caching(put= {@CachePut(cacheNames ="allAddresses",key="#addressDTO.customerId")},
+//    evict={@CacheEvict(cacheNames = "allAddresses",key="#addressDTO.customerId",condition = "#addressDTO.deleted=='Y'")})
+    @CacheEvict(cacheNames = "allAddresses",key="#addressDTO.customerId")
     public boolean updateAddress(AddressDTO addressDTO) {
 
         var status = false;
@@ -80,6 +88,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Cacheable(cacheNames ="allAddresses",key="#customerId")
     public List<AddressDTO> fetchAllAddress(Long customerId) {
         if (!CmsUtil.isNull(customerId)) {
             return addressRepository.findAddressByCustomerIdAndDeleted(customerId,"N").stream().map((address) -> {

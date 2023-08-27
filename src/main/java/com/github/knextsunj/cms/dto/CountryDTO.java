@@ -2,6 +2,8 @@ package com.github.knextsunj.cms.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 
-public record CountryDTO(@JsonProperty("id") Long id, @JsonProperty("name") String name, @JsonProperty("deleted") String deleted) {
+
+public record CountryDTO(@JsonProperty("id") Long id, @JsonProperty("name") String name, @JsonProperty("deleted") String deleted) implements Serializable {
 }

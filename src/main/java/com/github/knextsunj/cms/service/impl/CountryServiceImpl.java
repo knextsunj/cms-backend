@@ -14,6 +14,10 @@ import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.SerialNumberCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +41,7 @@ public class CountryServiceImpl implements CountryService {
     private static ThreadLocal<Long> serialNumberThreadLocal = new ThreadLocal<>();
 
     @Override
+    @CacheEvict(cacheNames="allCountries", allEntries=true)
     public boolean saveCountry(CountryDTO countryDTO) {
 
         if (!CmsUtil.isNull(countryDTO) && !CmsUtil.isNull(countryDTO.name())) {
@@ -53,6 +58,9 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+//    @Caching(put= {@CachePut(cacheNames ="allCountries",key="#countryDTO.id")},
+//            evict={@CacheEvict(cacheNames = "allCountries",key="#countryDTO.id",condition = "#countryDTO.deleted=='Y'")})
+    @CacheEvict(cacheNames="allCountries", allEntries=true)
     public boolean updateCountry(CountryDTO countryDTO) {
         if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.id())) {
             Optional<Country> countryOptional = countryRepository.findById(countryDTO.id());
@@ -72,6 +80,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+    @Cacheable(cacheNames ="allCountries")
     public List<CountryResponseDTO> findAllCountries() {
         serialNumberThreadLocal.set(0L);
         List<CountryResponseDTO> countryResponseDTOList =

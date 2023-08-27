@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 public record CustomerDTO(@JsonProperty("id") Long id, @JsonProperty("name") String name,
@@ -15,5 +16,5 @@ public record CustomerDTO(@JsonProperty("id") Long id, @JsonProperty("name") Str
                           @JsonProperty("dob") LocalDate dob,
                           @JsonProperty("gender") String gender, @JsonProperty("mobileNo") Long mobileNo,
                           @JsonProperty("emailAddress") String emailAddress,
-                          @JsonProperty("customerStatusDescr") String customerStatusDescr) {
+                          @JsonProperty("customerStatusDescr") String customerStatusDescr) implements Serializable {
 }

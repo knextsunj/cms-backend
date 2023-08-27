@@ -15,6 +15,8 @@ import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
+    @CacheEvict(cacheNames = "allCustomers",allEntries = true)
     public boolean saveCustomer(CustomerDTO customerDTO) {
         if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.name())) {
             if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.name())) {
@@ -57,6 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "allCustomers",allEntries = true)
     public boolean updateCustomer(CustomerDTO customerDTO) {
         if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.id())) {
             Optional<Customer> customerOptional = customerRepository.findById(customerDTO.id());
@@ -85,6 +89,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Cacheable(cacheNames = "allCustomers")
     public List<CustomerDTO> findAllCustomers() {
         return customerRepository.findAllByActiveStatusAndDeleted("ACTIVE", "N").stream().map(customer -> {
             return customerMapper.toCustomerDTO(customer);

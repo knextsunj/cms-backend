@@ -15,6 +15,8 @@ import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,6 +41,7 @@ public class CityServiceImpl implements CityService {
     private CityMapper cityMapper;
 
     @Override
+    @CacheEvict(cacheNames = "allCitiesByState",allEntries = true)
     public boolean saveCity(CityDTO cityDTO) {
         if (!CmsUtil.isNull(cityDTO) && !CmsUtil.isNull(cityDTO.name()) && CmsUtil.isNumPresent(cityDTO.stateId())) {
 
@@ -65,6 +68,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "allCitiesByState",key="#cityDTO.stateId")
     public boolean updateCity(CityDTO cityDTO) {
         if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.id())) {
             Optional<City> optionalCity = cityRepository.findById(cityDTO.id());
@@ -85,6 +89,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
+    @Cacheable(cacheNames = "allCitiesByState",key="#stateId")
     public List<CityDTO> findCitiesByStateId(Long stateId) {
         if (Optional.ofNullable(stateId).isPresent()) {
             List<City> cities = this.cityRepository.findCityByStateIdAndDeleted(stateId,"N");
