@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.service.impl;
 
+import com.github.knextsunj.cms.annotation.CountryValidationService;
 import com.github.knextsunj.cms.domain.Country;
 import com.github.knextsunj.cms.dto.CountryDTO;
 import com.github.knextsunj.cms.exception.DataNotFoundException;
@@ -12,26 +13,26 @@ import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.SerialNumberCalculator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Stateless
+@Local(CountryService.class)
 public class CountryServiceImpl implements CountryService {
 
-    @Autowired
-    @Qualifier("countryValidationService")
+    @Inject
+    @CountryValidationService
     private GenericValidationService genericValidationService;
 
-    @Autowired
+    @Inject
     private CountryRepository countryRepository;
 
-    @Autowired
+    @Inject
     private CountryMapper countryMapper;
 
     private static ThreadLocal<Long> serialNumberThreadLocal = new ThreadLocal<>();
@@ -39,9 +40,9 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public boolean saveCountry(CountryDTO countryDTO) {
 
-        if (!CmsUtil.isNull(countryDTO) && !CmsUtil.isNull(countryDTO.name())) {
-            if (countryRepository.count()!=0L && !genericValidationService.deDup(countryDTO.name())) {
-                throw new ValidationFailureException("Country with given name: " + countryDTO.name() + " already registered");
+        if (!CmsUtil.isNull(countryDTO) && !CmsUtil.isNull(countryDTO.getName())) {
+            if (countryRepository.count()!=0L && !genericValidationService.deDup(countryDTO.getName())) {
+                throw new ValidationFailureException("Country with given name: " + countryDTO.getName() + " already registered");
             }
 
             Country savedCountry = countryRepository.save(countryMapper.setDates(countryMapper.fromCountryDTO(countryDTO)));
@@ -54,15 +55,15 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public boolean updateCountry(CountryDTO countryDTO) {
-        if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.id())) {
-            Optional<Country> countryOptional = countryRepository.findById(countryDTO.id());
+        if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.getId())) {
+            Optional<Country> countryOptional = countryRepository.findById(countryDTO.getId());
             if (countryOptional.isPresent()) {
                 Country country = countryOptional.get();
-                if (!CmsUtil.isNull(countryDTO.deleted()) && countryDTO.deleted().equals("Y")) {
+                if (!CmsUtil.isNull(countryDTO.getDeleted()) && countryDTO.getDeleted().equals("Y")) {
                     country.setDeleted("Y");
                 }
-                if(!CmsUtil.isNull(countryDTO.name()))
-                country.setName(countryDTO.name());
+                if(!CmsUtil.isNull(countryDTO.getName()))
+                country.setName(countryDTO.getName());
                 Country updatedCountry = countryRepository.save(countryMapper.setDates(country));
                 if (updatedCountry != null)
                     return true;

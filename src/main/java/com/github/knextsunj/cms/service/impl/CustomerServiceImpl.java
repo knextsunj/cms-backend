@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.service.impl;
 
+import com.github.knextsunj.cms.annotation.CustomerValidationService;
 import com.github.knextsunj.cms.domain.Customer;
 import com.github.knextsunj.cms.domain.CustomerStatus;
 import com.github.knextsunj.cms.dto.CustomerDTO;
@@ -13,38 +14,39 @@ import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.MapperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Stateless
+@Local(CustomerService.class)
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
+    @Inject
     private CustomerMapper customerMapper;
 
-    @Autowired
+    @Inject
     private CustomerRepository customerRepository;
 
-    @Autowired
-    @Qualifier("customerValidationService")
+    @Inject
+    @CustomerValidationService
     private GenericValidationService genericValidationService;
 
-    @Autowired
+    @Inject
     private CustomerStatusRepository customerStatusRepository;
 
 
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO) {
-        if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.name())) {
-            if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.name())) {
-                throw new ValidationFailureException("Customer with given name: " + customerDTO.name() + " already registered");
+        if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.getName())) {
+            if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.getName())) {
+                throw new ValidationFailureException("Customer with given name: " + customerDTO.getName() + " already registered");
             }
-            CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName(customerDTO.customerStatusDescr());
+            CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName(customerDTO.getCustomerStatusDescr());
             Customer newCustomer = customerMapper.setDates(customerMapper.fromCustomerDTO(customerDTO));
             newCustomer.setCustomerStatus(customerStatus);
             Customer savedCustomer = customerRepository.save(newCustomer);
@@ -58,22 +60,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO) {
-        if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.id())) {
-            Optional<Customer> customerOptional = customerRepository.findById(customerDTO.id());
+        if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.getId())) {
+            Optional<Customer> customerOptional = customerRepository.findById(customerDTO.getId());
             if (customerOptional.isPresent()) {
                 Customer customer = customerOptional.get();
-                if (!CmsUtil.isNull(customerDTO.deleted()) && customerDTO.deleted().equals("Y")) {
+                if (!CmsUtil.isNull(customerDTO.getDeleted()) && customerDTO.getDeleted().equals("Y")) {
                     customer.setDeleted("Y");
                 }
 
-                if (!CmsUtil.isNull(customerDTO.customerStatusDescr()) && customerDTO.customerStatusDescr().equals("INACTIVE")) {
+                if (!CmsUtil.isNull(customerDTO.getCustomerStatusDescr()) && customerDTO.getCustomerStatusDescr().equals("INACTIVE")) {
                     CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName("INACTIVE");
                     if (CmsUtil.isNull(customerStatus)) {
                         customer.setCustomerStatus(customerStatus);
                     }
                 }
-                if (!CmsUtil.isNull(customerDTO.name())) {
-                    customer.setName(customerDTO.name());
+                if (!CmsUtil.isNull(customerDTO.getName())) {
+                    customer.setName(customerDTO.getName());
                 }
 
                 Customer updatedCustomer = customerRepository.save(customerMapper.setDates(MapperUtil.updateCustomerDetails(customerDTO,customer)));

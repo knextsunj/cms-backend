@@ -2,21 +2,24 @@ package com.github.knextsunj.cms.controller;
 
 import com.github.knextsunj.cms.dto.UserPreferenceDTO;
 import com.github.knextsunj.cms.service.UserPreferenceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/userpreferences")
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+@Stateless
+@Path("/userpreferences")
 public class UserPreferencesController {
 
-    @Autowired
+    @Inject
     private UserPreferenceService userPreferenceService;
 
-    @RequestMapping(value = "/fetchUserPreferences/{username}", method = RequestMethod.GET)
-    public UserPreferenceDTO fetchUserPreferences(@PathVariable("username") String username) {
+    @GET
+    @Path("/fetchUserPreferences/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public UserPreferenceDTO fetchUserPreferences(@PathParam("username") String username) {
         return userPreferenceService.retrieveUserPreferences(username);
     }
 

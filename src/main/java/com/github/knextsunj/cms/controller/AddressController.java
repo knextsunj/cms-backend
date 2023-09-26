@@ -2,30 +2,41 @@ package com.github.knextsunj.cms.controller;
 
 import com.github.knextsunj.cms.dto.AddressDTO;
 import com.github.knextsunj.cms.service.AddressService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@RestController
-@RequestMapping("/address")
+@Stateless
+@Path("/address")
 public class AddressController {
 
-    @Autowired
+    @Inject
     private AddressService addressService;
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public boolean saveAddress(@RequestBody AddressDTO addressDTO) {
+    @POST
+    @Path("/save")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean saveAddress(AddressDTO addressDTO) {
         return addressService.saveAddress(addressDTO);
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public boolean updateAddress(@RequestBody AddressDTO addressDTO) {
+    @PUT
+    @Path("/update")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean updateAddress(AddressDTO addressDTO) {
         return addressService.updateAddress(addressDTO);
     }
 
-    @RequestMapping(value = "/fetchAll/{customerId}", method = RequestMethod.GET)
-    public List<AddressDTO> findAllAddress(@PathVariable("customerId") Long customerId) {
+    @GET
+    @Path("/fetchAll/{customerId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<AddressDTO> findAllAddress(@PathParam("customerId") Long customerId) {
         return addressService.fetchAllAddress(customerId);
     }
 

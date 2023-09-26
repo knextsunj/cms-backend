@@ -1,57 +1,57 @@
 package com.github.knextsunj.cms.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
+import com.github.knextsunj.cms.annotation.StateValidationService;
 import com.github.knextsunj.cms.domain.Country;
-import com.github.knextsunj.cms.exception.DataNotFoundException;
-import com.github.knextsunj.cms.exception.ValidationFailureException;
-import com.github.knextsunj.cms.repository.CountryRepository;
-import com.github.knextsunj.cms.service.validation.GenericValidationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
 import com.github.knextsunj.cms.domain.State;
 import com.github.knextsunj.cms.dto.StateDTO;
 import com.github.knextsunj.cms.exception.BusinessException;
+import com.github.knextsunj.cms.exception.DataNotFoundException;
+import com.github.knextsunj.cms.exception.ValidationFailureException;
 import com.github.knextsunj.cms.mapper.StateMapper;
+import com.github.knextsunj.cms.repository.CountryRepository;
 import com.github.knextsunj.cms.repository.StateRepository;
 import com.github.knextsunj.cms.service.StateService;
+import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsUtil;
 
-@Service
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Stateless
+@Local(StateService.class)
 public class StateServiceImpl implements StateService {
 
-	@Autowired
+	@Inject
 	private StateRepository stateRepository;
 
-	@Autowired
+	@Inject
 	private CountryRepository countryRepository;
 
-	@Autowired
+	@Inject
 	private StateMapper stateMapper;
 
-	@Autowired
-	@Qualifier("stateValidationService")
+	@Inject
+	@StateValidationService
 	private GenericValidationService genericValidationService;
 
 	@Override
 	public boolean saveState(StateDTO stateDTO) {
-		if (!CmsUtil.isNull(stateDTO) && !CmsUtil.isNull(stateDTO.name()) && CmsUtil.isNumPresent(stateDTO.countryId())) {
+		if (!CmsUtil.isNull(stateDTO) && !CmsUtil.isNull(stateDTO.getName()) && CmsUtil.isNumPresent(stateDTO.getCountryId())) {
 
 
 
-			if (stateRepository.count()!=0L && !genericValidationService.deDup(stateDTO.name())) {
-				throw new ValidationFailureException("State with given name: " + stateDTO.name() + " already registered");
+			if (stateRepository.count()!=0L && !genericValidationService.deDup(stateDTO.getName())) {
+				throw new ValidationFailureException("State with given name: " + stateDTO.getName() + " already registered");
 			}
 
 
-		Optional<Country> countryOptional = countryRepository.findById(stateDTO.countryId());
-		if(countryOptional.isPresent()) {
+		Optional<Country> countryOptional = countryRepository.findById(stateDTO.getCountryId());
+			if(countryOptional.isPresent()) {
 
 			State newState = stateMapper.setDates(stateMapper.fromStateDTO(stateDTO));
 			newState.setCountry(countryOptional.get());
@@ -61,7 +61,7 @@ public class StateServiceImpl implements StateService {
 			}
 		}
 		else {
-			throw new DataNotFoundException("Unable to save state with name::"+stateDTO.name()+", required country mapping");
+			throw new DataNotFoundException("Unable to save state with name::"+stateDTO.getDeleted()+", required country mapping");
 		}
 		}
 		return false;
@@ -69,15 +69,15 @@ public class StateServiceImpl implements StateService {
 
 	@Override
 	public boolean updateState(StateDTO stateDTO) {
-		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.id())) {
-			Optional<State> optionalState = stateRepository.findById(stateDTO.id());
+		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.getId())) {
+			Optional<State> optionalState = stateRepository.findById(stateDTO.getId());
 			if(optionalState.isPresent()) {
 				State state = optionalState.get();
-				if(!CmsUtil.isNull(stateDTO.name())) {
-					state.setName(stateDTO.name());
+				if(!CmsUtil.isNull(stateDTO.getName())) {
+					state.setName(stateDTO.getName());
 				}
-				if(!CmsUtil.isNull(stateDTO.deleted()) && stateDTO.deleted().equals("Y")) {
-					state.setDeleted(stateDTO.deleted());
+				if(!CmsUtil.isNull(stateDTO.getDeleted()) && stateDTO.getDeleted().equals("Y")) {
+					state.setDeleted(stateDTO.getDeleted());
 				}
 				state.setUpdatedDate(LocalDateTime.now());
 				stateRepository.save(state);

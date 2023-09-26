@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AddressTypeRepository extends JpaRepository<AddressType,Long> {
+public interface AddressTypeRepository extends JpaRepository<AddressType,Long>
+{
 
     AddressType findAddressTypeByName(String name);
 

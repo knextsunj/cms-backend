@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.CDI)
 public interface CustomerStatusMapper {
 
     @Mapping(target = "id", source = "id")

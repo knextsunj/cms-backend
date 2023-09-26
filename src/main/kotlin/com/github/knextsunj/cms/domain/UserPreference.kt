@@ -1,6 +1,6 @@
 package com.github.knextsunj.cms.domain
 
-import org.hibernate.annotations.DynamicUpdate
+//import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.*
 
 @Entity
@@ -9,7 +9,7 @@ import javax.persistence.*
     name = "UserPreference.findByUserId",
     query = "select userpreference from UserPreference userpreference where userpreference.user.id=:userId",
 )
-@DynamicUpdate
+//@DynamicUpdate
 open class UserPreference {
 
     @Id

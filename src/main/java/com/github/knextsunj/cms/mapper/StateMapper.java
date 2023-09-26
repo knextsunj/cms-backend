@@ -14,15 +14,15 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.CDI)
 public abstract class StateMapper {
 
 
 	public State fromStateDTO(StateDTO stateDTO) {
 		State state = new State();
-		state.setName(stateDTO.name());
-		if(!CmsUtil.isNull(stateDTO.deleted())) {
-			state.setDeleted(stateDTO.deleted());
+		state.setName(stateDTO.getName());
+		if(!CmsUtil.isNull(stateDTO.getDeleted())) {
+			state.setDeleted(stateDTO.getDeleted());
 		}
 		return state;
 	}

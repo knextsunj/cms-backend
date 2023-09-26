@@ -1,7 +1,7 @@
 package com.github.knextsunj.cms.service.impl;
 
+import com.github.knextsunj.cms.annotation.CityValidationService;
 import com.github.knextsunj.cms.domain.City;
-import com.github.knextsunj.cms.domain.Country;
 import com.github.knextsunj.cms.domain.State;
 import com.github.knextsunj.cms.dto.CityDTO;
 import com.github.knextsunj.cms.exception.BusinessException;
@@ -13,41 +13,43 @@ import com.github.knextsunj.cms.repository.StateRepository;
 import com.github.knextsunj.cms.service.CityService;
 import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import com.github.knextsunj.cms.util.CmsUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+//import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+@Stateless
+@Local(CityService.class)
 public class CityServiceImpl implements CityService {
 
-    @Autowired
-    @Qualifier("cityValidationService")
+    @Inject
+    @CityValidationService
     private GenericValidationService genericValidationService;
 
-    @Autowired
+    @Inject
     private StateRepository stateRepository;
 
-    @Autowired
+    @Inject
     private CityRepository cityRepository;
 
-    @Autowired
+    @Inject
     private CityMapper cityMapper;
 
     @Override
     public boolean saveCity(CityDTO cityDTO) {
-        if (!CmsUtil.isNull(cityDTO) && !CmsUtil.isNull(cityDTO.name()) && CmsUtil.isNumPresent(cityDTO.stateId())) {
+        if (!CmsUtil.isNull(cityDTO) && !CmsUtil.isNull(cityDTO.getName()) && CmsUtil.isNumPresent(cityDTO.getStateId())) {
 
-            if (cityRepository.count()!=0L && !genericValidationService.deDup(cityDTO.name())) {
-                throw new ValidationFailureException("State with given name: " + cityDTO.name() + " already registered");
+            if (cityRepository.count()!=0L && !genericValidationService.deDup(cityDTO.getName())) {
+                throw new ValidationFailureException("State with given name: " + cityDTO.getName() + " already registered");
             }
 
 
-            Optional<State> stateOptional = stateRepository.findById(cityDTO.stateId());
+            Optional<State> stateOptional = stateRepository.findById(cityDTO.getStateId());
             if(stateOptional.isPresent()) {
 
                 City newCity = cityMapper.setDates(cityMapper.fromCityDTO(cityDTO));
@@ -58,7 +60,7 @@ public class CityServiceImpl implements CityService {
                 }
             }
             else {
-                throw new DataNotFoundException("Unable to save state with name::"+cityDTO.name()+", required country mapping");
+                throw new DataNotFoundException("Unable to save state with name::"+cityDTO.getName()+", required country mapping");
             }
         }
         return false;
@@ -66,15 +68,15 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean updateCity(CityDTO cityDTO) {
-        if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.id())) {
-            Optional<City> optionalCity = cityRepository.findById(cityDTO.id());
+        if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.getId())) {
+            Optional<City> optionalCity = cityRepository.findById(cityDTO.getId());
             if(optionalCity.isPresent()) {
                 City city = optionalCity.get();
-                if(!CmsUtil.isNull(cityDTO.name())){
-                    city.setName(cityDTO.name());
+                if(!CmsUtil.isNull(cityDTO.getName())){
+                    city.setName(cityDTO.getName());
                 }
-                if(!CmsUtil.isNull(cityDTO.deleted()) && cityDTO.deleted().equals("Y")) {
-                    city.setDeleted(cityDTO.deleted());
+                if(!CmsUtil.isNull(cityDTO.getDeleted()) && cityDTO.getDeleted().equals("Y")) {
+                    city.setDeleted(cityDTO.getDeleted());
                 }
                 city.setUpdatedDate(LocalDateTime.now());
                 cityRepository.save(city);

@@ -7,21 +7,23 @@ import com.github.knextsunj.cms.mapper.UserPreferenceMapper;
 import com.github.knextsunj.cms.repository.UserPreferenceRepository;
 import com.github.knextsunj.cms.repository.UserRepository;
 import com.github.knextsunj.cms.service.UserPreferenceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.List;
 
-@Service
+@Stateless
+@Local(UserPreferenceService.class)
 public class UserPreferenceServiceImpl implements UserPreferenceService {
 
-    @Autowired
+    @Inject
     private UserPreferenceRepository userPreferenceRepository;
 
-    @Autowired
+    @Inject
     private UserRepository userRepository;
 
-    @Autowired
+    @Inject
     private UserPreferenceMapper userPreferenceMapper;
 
     @Override

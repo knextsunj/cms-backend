@@ -3,30 +3,41 @@ package com.github.knextsunj.cms.controller;
 import com.github.knextsunj.cms.dto.CountryDTO;
 import com.github.knextsunj.cms.responsedto.CountryResponseDTO;
 import com.github.knextsunj.cms.service.CountryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@RestController
-@RequestMapping("/country")
+@Stateless
+@Path("/country")
 public class CountryController {
 
-    @Autowired
+    @Inject
     private CountryService countryService;
 
-    @GetMapping(value = "/findAll")
+    @GET
+    @Path("/findAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public List<CountryResponseDTO> findAllCountries() {
         return countryService.findAllCountries();
     }
 
-    @PostMapping(value = "/save")
-    public boolean saveCountry(@RequestBody CountryDTO countryDTO) {
+    @POST
+    @Path("/save")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean saveCountry(CountryDTO countryDTO) {
         return countryService.saveCountry(countryDTO);
     }
 
-    @PutMapping(value = "/update")
-    public boolean updateCountry(@RequestBody CountryDTO countryDTO) {
+    @PUT
+    @Path("/update")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean updateCountry(CountryDTO countryDTO) {
         return countryService.updateCountry(countryDTO);
     }
     

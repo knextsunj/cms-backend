@@ -2,32 +2,43 @@ package com.github.knextsunj.cms.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.github.knextsunj.cms.dto.StateDTO;
 import com.github.knextsunj.cms.service.StateService;
 
-@RestController
-@RequestMapping("/state")
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
+@Stateless
+@Path("/state")
 public class StateController {
 
-	@Autowired
+	@Inject
 	private StateService stateService;
 
 	//For show all states
-	@GetMapping("/find/{countryId}")
-	public List<StateDTO> findStatesByCountry(@PathVariable("countryId") Long countryId) {
+	@GET
+	@Path("/fetchAll/{countryId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<StateDTO> findStatesByCountry(@PathParam("countryId") Long countryId) {
 		return stateService.findStatesByCountryId(countryId);
 	}
 	
-	@PutMapping("/update")
-	public boolean updateState(@RequestBody StateDTO stateDTO) {
+	@PUT
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean updateState(StateDTO stateDTO) {
 		return stateService.updateState(stateDTO);
 	}
 
-	@PostMapping("/save")
-	public boolean saveState(@RequestBody StateDTO stateDTO) {
+	@POST
+	@Path("/save")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean saveState(StateDTO stateDTO) {
 		return stateService.saveState(stateDTO);
 	}
 

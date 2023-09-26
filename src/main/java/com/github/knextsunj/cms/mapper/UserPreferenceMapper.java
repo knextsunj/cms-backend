@@ -8,7 +8,7 @@ import org.mapstruct.MappingConstants;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.CDI)
 public interface UserPreferenceMapper {
 
     default UserPreferenceDTO toUserPreferencesDTO(Long userId, List<UserPreference> userPreferences) {

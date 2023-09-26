@@ -2,30 +2,41 @@ package com.github.knextsunj.cms.controller;
 
 import com.github.knextsunj.cms.dto.CustomerDTO;
 import com.github.knextsunj.cms.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@RestController
-@RequestMapping("/customer")
+@Stateless
+@Path("/customer")
 public class CustomerController {
 
-    @Autowired
+    @Inject
     private CustomerService customerService;
 
-    @GetMapping(value = "/findAll")
+    @GET
+    @Path("/findAll")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public List<CustomerDTO> findAllCountries() {
         return customerService.findAllCustomers();
     }
 
-    @PostMapping(value = "/save")
-    public boolean saveCountry(@RequestBody CustomerDTO customerDTO) {
+    @POST
+    @Path("/save")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean saveCountry(CustomerDTO customerDTO) {
         return customerService.saveCustomer(customerDTO);
     }
 
-    @PutMapping(value = "/update")
-    public boolean updateCountry(@RequestBody CustomerDTO customerDTO) {
+    @PUT
+    @Path("/update")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean updateCountry(CustomerDTO customerDTO) {
         return customerService.updateCustomer(customerDTO);
     }
 

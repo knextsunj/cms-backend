@@ -1,6 +1,6 @@
 package com.github.knextsunj.cms.domain
 
-import org.hibernate.annotations.DynamicUpdate
+//import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -10,7 +10,7 @@ import javax.persistence.*
     name = "User.findByUsername",
     query = "select user from User user where name=:username",
 )
-@DynamicUpdate
+//@DynamicUpdate
 open class User {
 
     @Id
