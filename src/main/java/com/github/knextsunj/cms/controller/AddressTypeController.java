@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.controller;
 
+import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.AddressTypeDTO;
 import com.github.knextsunj.cms.service.AddressTypeService;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Stateless
 @Path("/addresstype")
+@JWTRequired
 public class AddressTypeController {
 
     @Inject

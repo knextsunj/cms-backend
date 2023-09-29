@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.controller;
 
+import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.AddressDTO;
 
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Stateless
 @Path("/hello")
+@JWTRequired
 public class HelloController {
 
     @GET

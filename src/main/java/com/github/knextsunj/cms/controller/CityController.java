@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.controller;
 
+import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.CityDTO;
 import com.github.knextsunj.cms.service.CityService;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Stateless
 @Path("/city")
+@JWTRequired
 public class CityController {
 
     @Inject
