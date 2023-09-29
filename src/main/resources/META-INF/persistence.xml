@@ -18,8 +18,8 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
 <!--            <property name="hibernate.transaction.coordinator_class" value="jta"/>-->
-<!--            <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.WebSphereLibertyJtaPlatform"/>-->
-        <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.WildFlyStandAloneJtaPlatform"  />
+<!--       <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.WebSphereLibertyJtaPlatform"/>-->
+      <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.WildFlyStandAloneJtaPlatform"  />
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
         </properties>
 <!--        <properties>-->

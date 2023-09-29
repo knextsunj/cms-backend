@@ -19,7 +19,7 @@ public class StateController {
 
 	//For show all states
 	@GET
-	@Path("/fetchAll/{countryId}")
+	@Path("/find/{countryId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<StateDTO> findStatesByCountry(@PathParam("countryId") Long countryId) {

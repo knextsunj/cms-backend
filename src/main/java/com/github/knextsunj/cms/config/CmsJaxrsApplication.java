@@ -17,22 +17,22 @@ import static com.github.knextsunj.cms.config.security.Constants.USER;
 //@DeclareRoles({ADMIN, USER})
 public class CmsJaxrsApplication extends Application {
 
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> classes = new HashSet<>();
-        classes.add(AddressController.class);
-        classes.add(AddressTypeController.class);
-        classes.add(CityController.class);
-        classes.add(CustomerController.class);
-        classes.add(CustomerStatusController.class);
-        classes.add(LoginController.class);
-        classes.add(StateController.class);
-        classes.add(UserPreferencesController.class);
-        classes.add(HelloController.class);
-        classes.add(CountryController.class);
+//    public Set<Class<?>> getClasses() {
+//        Set<Class<?>> classes = new HashSet<>();
+//        classes.add(AddressController.class);
+//        classes.add(AddressTypeController.class);
+//        classes.add(CityController.class);
+//        classes.add(CustomerController.class);
+//        classes.add(CustomerStatusController.class);
+//        classes.add(LoginController.class);
+//        classes.add(StateController.class);
+//        classes.add(UserPreferencesController.class);
+//        classes.add(HelloController.class);
+//        classes.add(CountryController.class);
 //        classes.add(JacksonJaxbJsonProvider.class);
-        classes.add(CorsFilter.class);
-        classes.add(JWTFilter.class);
-        return classes;
-    }
+//        classes.add(CorsFilter.class);
+//        classes.add(JWTFilter.class);
+//        return classes;
+//    }
 
 }
