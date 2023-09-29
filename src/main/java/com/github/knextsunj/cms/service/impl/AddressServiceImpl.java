@@ -64,7 +64,7 @@ public class AddressServiceImpl implements AddressService {
         var status = false;
         if (!CmsUtil.isNull(addressDTO) && !CmsUtil.isNull(addressDTO.getId())) {
 
-            Optional<Address> optionalAddress = addressRepository.findById(addressDTO.getId());
+            Optional<Address> optionalAddress = addressRepository.findOptionalBy(addressDTO.getId());
             if (optionalAddress.isPresent()) {
                 Address address = optionalAddress.get();
                 if (!CmsUtil.isNull(addressDTO.getDeleted()) && addressDTO.getDeleted().equals("Y")) {
@@ -101,11 +101,11 @@ public class AddressServiceImpl implements AddressService {
 
         var status = false;
 
-        Optional<AddressType> optionalAddressType = addressTypeRepository.findById(addressDTO.getAddressTypeId());
-        Optional<City> optionalCity = cityRepository.findById(addressDTO.getCityId());
-        Optional<State> optionalState = stateRepository.findById(addressDTO.getStateId());
-        Optional<Country> optionalCountry = countryRepository.findById(addressDTO.getCountryId());
-        Optional<Customer> optionalCustomer = customerRepository.findById(addressDTO.getCustomerId());
+        Optional<AddressType> optionalAddressType = addressTypeRepository.findOptionalBy(addressDTO.getAddressTypeId());
+        Optional<City> optionalCity = cityRepository.findOptionalBy(addressDTO.getCityId());
+        Optional<State> optionalState = stateRepository.findOptionalBy(addressDTO.getStateId());
+        Optional<Country> optionalCountry = countryRepository.findOptionalBy(addressDTO.getCountryId());
+        Optional<Customer> optionalCustomer = customerRepository.findOptionalBy(addressDTO.getCustomerId());
 
         if (optionalAddressType.isPresent() && optionalCity.isPresent() && optionalState.isPresent() && optionalCountry.isPresent() && optionalCustomer.isPresent()) {
 

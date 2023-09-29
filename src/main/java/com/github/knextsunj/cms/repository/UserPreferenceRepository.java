@@ -1,15 +1,17 @@
 package com.github.knextsunj.cms.repository;
 
 import com.github.knextsunj.cms.domain.UserPreference;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.apache.deltaspike.data.api.FullEntityRepository;
+import org.apache.deltaspike.data.api.Query;
+import org.apache.deltaspike.data.api.QueryParam;
+import org.apache.deltaspike.data.api.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserPreferenceRepository extends JpaRepository<UserPreference,Long>
+public interface UserPreferenceRepository extends FullEntityRepository<UserPreference,Long>
 {
 
-    List<UserPreference> findByUserId(Long userId);
+    @Query(named="UserPreference.findByUserId")
+    List<UserPreference> findByUserId(@QueryParam("userId") Long userId);
 }

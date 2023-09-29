@@ -1,14 +1,14 @@
 package com.github.knextsunj.cms.repository;
 
 import com.github.knextsunj.cms.domain.Address;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.deltaspike.data.api.*;
 
 
 import java.util.List;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address, Long>
+public interface AddressRepository extends FullEntityRepository<Address, Long>
 {
-    List<Address> findAddressByCustomerIdAndDeleted(Long customerId,String deleted);
+    @Query(named="Address.findAddressByCustomerIdAndDeleted")
+    List<Address> findAddressByCustomerIdAndDeleted(@QueryParam("customerId") Long customerId,@QueryParam("deleted") String deleted);
 }

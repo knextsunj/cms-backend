@@ -1,17 +1,17 @@
 package com.github.knextsunj.cms.repository;
 
 import com.github.knextsunj.cms.domain.Country;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.apache.deltaspike.data.api.*;
 
 import java.util.List;
 
 @Repository
-public interface CountryRepository extends JpaRepository<Country, Long>
+public interface CountryRepository extends FullEntityRepository<Country, Long>
 {
 
-    Country findByName(String name);
+    @Query(named="Country.findByName",singleResult = SingleResultType.OPTIONAL)
+    Country findByName(@QueryParam("name") String name);
 
-    List<Country> findAllCountriesByDeleted(String deleted);
+    @Query(named="Country.findAllCountriesByDeleted")
+    List<Country> findAllCountriesByDeleted(@QueryParam("deleted") String deleted);
 }

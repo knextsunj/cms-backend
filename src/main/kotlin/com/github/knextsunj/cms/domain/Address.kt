@@ -1,6 +1,6 @@
 package com.github.knextsunj.cms.domain
 
-//import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -10,7 +10,7 @@ import javax.persistence.*
     name = "Address.findAddressByCustomerIdAndDeleted",
     query = "select address from Address address JOIN FETCH address.customer where address.customer.id=:customerId and address.deleted=:deleted"
 )
-//@DynamicUpdate
+@DynamicUpdate
 open class Address {
 
     @Id

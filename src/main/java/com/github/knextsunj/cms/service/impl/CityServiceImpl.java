@@ -49,7 +49,7 @@ public class CityServiceImpl implements CityService {
             }
 
 
-            Optional<State> stateOptional = stateRepository.findById(cityDTO.getStateId());
+            Optional<State> stateOptional = stateRepository.findOptionalBy(cityDTO.getStateId());
             if(stateOptional.isPresent()) {
 
                 City newCity = cityMapper.setDates(cityMapper.fromCityDTO(cityDTO));
@@ -69,7 +69,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public boolean updateCity(CityDTO cityDTO) {
         if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.getId())) {
-            Optional<City> optionalCity = cityRepository.findById(cityDTO.getId());
+            Optional<City> optionalCity = cityRepository.findOptionalBy(cityDTO.getId());
             if(optionalCity.isPresent()) {
                 City city = optionalCity.get();
                 if(!CmsUtil.isNull(cityDTO.getName())){

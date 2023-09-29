@@ -1,6 +1,6 @@
 package com.github.knextsunj.cms.domain
 
-//import org.hibernate.annotations.DynamicUpdate
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -10,12 +10,13 @@ import javax.persistence.*
     NamedQuery(name = "Country.findByName", query = "select country from Country country where country.name=:name"),
     NamedQuery(name = "Country.findAllCountriesByDeleted", query= "select country from Country country where country.deleted=:deleted")
 )
-//@DynamicUpdate
+@DynamicUpdate
 open class Country {
 
     @Id
-    @SequenceGenerator(name = "COUNTRY_ID_SEQUENCE", sequenceName = "COUNTRY_ID_SEQUENCE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COUNTRY_ID_SEQUENCE")
+//    @SequenceGenerator(name = "COUNTRY_ID_SEQUENCE", sequenceName = "COUNTRY_ID_SEQUENCE", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COUNTRY_ID_SEQUENCE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Long? = null
 
     @Column(name = "name")

@@ -14,8 +14,7 @@ import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.SerialNumberCalculator;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Local(CountryService.class)
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class CountryServiceImpl implements CountryService {
 
     @Inject
@@ -56,7 +56,7 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public boolean updateCountry(CountryDTO countryDTO) {
         if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.getId())) {
-            Optional<Country> countryOptional = countryRepository.findById(countryDTO.getId());
+            Optional<Country> countryOptional = countryRepository.findOptionalBy(countryDTO.getId());
             if (countryOptional.isPresent()) {
                 Country country = countryOptional.get();
                 if (!CmsUtil.isNull(countryDTO.getDeleted()) && countryDTO.getDeleted().equals("Y")) {
@@ -85,7 +85,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryDTO fetchCountryById(long id) {
-        Optional<Country> countryOptional = countryRepository.findById(id);
+        Optional<Country> countryOptional = countryRepository.findOptionalBy(id);
         if (countryOptional.isPresent()) {
             return countryMapper.toCountryDTO(countryOptional.get());
         } else {

@@ -1,18 +1,17 @@
 package com.github.knextsunj.cms.repository;
 
 import com.github.knextsunj.cms.domain.CustomerStatus;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import org.apache.deltaspike.data.api.*;
 
 import java.util.List;
 
 @Repository
-public interface CustomerStatusRepository extends JpaRepository<CustomerStatus,Long>
+public interface CustomerStatusRepository extends FullEntityRepository<CustomerStatus,Long>
 {
+    @Query(named="CustomerStatus.findCustomerStatusByName",singleResult = SingleResultType.OPTIONAL)
+    CustomerStatus findCustomerStatusByName(@QueryParam("name") String name);
 
-    CustomerStatus findCustomerStatusByName(String name);
-
-    List<CustomerStatus> findAllCustomerStatusByDeleted(String deleted);
+    @Query(named="CustomerStatus.findAllCustomerStatusByDeleted")
+    List<CustomerStatus> findAllCustomerStatusByDeleted(@QueryParam("deleted") String deleted);
 
 }

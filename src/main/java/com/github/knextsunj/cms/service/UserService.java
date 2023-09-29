@@ -1,6 +1,10 @@
 package com.github.knextsunj.cms.service;
 
-public interface UserService {
+import com.github.knextsunj.cms.domain.AccountCredentials;
+import com.github.knextsunj.cms.dto.AuthenticatedUser;
 
-    String getRoleForUser(String username);
+public interface UserService {
+    AuthenticatedUser validateUser(AccountCredentials accountCredentials);
 }
+
+

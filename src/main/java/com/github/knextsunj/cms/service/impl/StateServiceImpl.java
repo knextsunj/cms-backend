@@ -50,7 +50,7 @@ public class StateServiceImpl implements StateService {
 			}
 
 
-		Optional<Country> countryOptional = countryRepository.findById(stateDTO.getCountryId());
+		Optional<Country> countryOptional = countryRepository.findOptionalBy(stateDTO.getCountryId());
 			if(countryOptional.isPresent()) {
 
 			State newState = stateMapper.setDates(stateMapper.fromStateDTO(stateDTO));
@@ -70,7 +70,7 @@ public class StateServiceImpl implements StateService {
 	@Override
 	public boolean updateState(StateDTO stateDTO) {
 		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.getId())) {
-			Optional<State> optionalState = stateRepository.findById(stateDTO.getId());
+			Optional<State> optionalState = stateRepository.findOptionalBy(stateDTO.getId());
 			if(optionalState.isPresent()) {
 				State state = optionalState.get();
 				if(!CmsUtil.isNull(stateDTO.getName())) {

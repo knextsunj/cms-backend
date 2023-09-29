@@ -53,7 +53,7 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
     @Override
     public boolean updateCustomerStatus(CustomerStatusDTO customerStatusDTO) {
         if (Optional.ofNullable(customerStatusDTO).isPresent() && CmsUtil.isNumPresent(customerStatusDTO.getId())) {
-            Optional<CustomerStatus> customerStatusOptional = customerStatusRepository.findById(customerStatusDTO.getId());
+            Optional<CustomerStatus> customerStatusOptional = customerStatusRepository.findOptionalBy(customerStatusDTO.getId());
             if (customerStatusOptional.isPresent()) {
                 CustomerStatus customerStatus = customerStatusOptional.get();
                 if (!CmsUtil.isNull(customerStatusDTO.getDeleted()) && customerStatusDTO.getDeleted().equals("Y")) {
@@ -81,7 +81,7 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
 
     @Override
     public CustomerStatusDTO fetchCustomerStatusById(long id) {
-        Optional<CustomerStatus> optionalCustomerStatus = customerStatusRepository.findById(id);
+        Optional<CustomerStatus> optionalCustomerStatus = customerStatusRepository.findOptionalBy(id);
         if (optionalCustomerStatus.isEmpty()) {
             throw new DataNotFoundException(CmsExceptionUtil.composeExceptionMessage("No customer status data found for id: ", id));
         }

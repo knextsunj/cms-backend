@@ -1,16 +1,17 @@
 package com.github.knextsunj.cms.repository;
 
 import com.github.knextsunj.cms.domain.AddressType;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.apache.deltaspike.data.api.*;
 
 import java.util.List;
 
 @Repository
-public interface AddressTypeRepository extends JpaRepository<AddressType,Long>
+public interface AddressTypeRepository extends FullEntityRepository<AddressType,Long>
 {
 
-    AddressType findAddressTypeByName(String name);
+    @Query(named="AddressType.findAddressTypeByName",singleResult = SingleResultType.OPTIONAL)
+    AddressType findAddressTypeByName(@QueryParam("name") String name);
 
-    List<AddressType> findAllAddressTypesByDeleted(String deleted);
+    @Query(named="AddressType.findAllAddressTypesByDeleted")
+    List<AddressType> findAllAddressTypesByDeleted(@QueryParam("deleted") String deleted);
 }

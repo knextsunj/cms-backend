@@ -1,3 +1,3 @@
 package com.github.knextsunj.cms.dto
 
-data class AuthenticatedUser(val user:String?)
+data class AuthenticatedUser(val user:String?,val role:String?)

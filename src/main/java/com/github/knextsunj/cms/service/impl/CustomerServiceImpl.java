@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO) {
         if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.getId())) {
-            Optional<Customer> customerOptional = customerRepository.findById(customerDTO.getId());
+            Optional<Customer> customerOptional = customerRepository.findOptionalBy(customerDTO.getId());
             if (customerOptional.isPresent()) {
                 Customer customer = customerOptional.get();
                 if (!CmsUtil.isNull(customerDTO.getDeleted()) && customerDTO.getDeleted().equals("Y")) {
@@ -95,7 +95,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO findCustomerById(Long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+        Optional<Customer> customerOptional = customerRepository.findOptionalBy (id);
         if (customerOptional.isPresent()) {
             return customerMapper.toCustomerDTO(customerOptional.get());
         } else {

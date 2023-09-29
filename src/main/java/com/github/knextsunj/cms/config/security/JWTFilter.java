@@ -39,13 +39,21 @@ public class JWTFilter implements ContainerRequestFilter {
     }
 
     private String getUserIfValid(String token) {
-        Key key = new SecretKeySpec("secret".getBytes(), "DES");
+//        Key key = new SecretKeySpec("secret".getBytes(), "DES");
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(key)
-                    .parseClaimsJws(token);
-            String scope = claims.getBody().get("scope", String.class);
-            System.out.println("scope " + scope);
-            return claims.getBody().getSubject();
+//            Jws<Claims> claims = Jwts.parser().setSigningKey(key)
+//                    .parseClaimsJws(token);
+//            String scope = claims.getBody().get("scope", String.class);
+//            System.out.println("scope " + scope);
+//            return claims.getBody().getSubject();
+
+            String user = Jwts.parserBuilder()
+                    .setSigningKey(TokenIssuer.key)
+                    .build()
+                    .parseClaimsJws(token.replace(TokenIssuer.PREFIX, ""))
+                    .getBody()
+                    .getSubject();
+            return user;
         } catch (ExpiredJwtException | MalformedJwtException | SignatureException | UnsupportedJwtException | IllegalArgumentException e) {
             //don't trust the JWT!
             e.printStackTrace();

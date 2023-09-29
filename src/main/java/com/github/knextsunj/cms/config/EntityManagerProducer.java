@@ -11,25 +11,27 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 
+//@RequestScoped
 @ApplicationScoped
 public class EntityManagerProducer {
 
-//    @PersistenceContext(unitName = "cmsPU")
-//    private EntityManager entityManager;
-
-    @PersistenceUnit(unitName = "cmsPU")
     @Produces
-    @Dependent
-    private EntityManagerFactory entityManagerFactory;
+    @PersistenceContext(unitName = "cmsPU")
+    private EntityManager entityManager;
 
-    @Produces
-    @RequestScoped
-    public EntityManager getEntityManager() {
-        return entityManagerFactory.createEntityManager();
-    }
+//    @PersistenceUnit(unitName = "cmsPU")
+//    @Produces
+//    @Dependent
+//    private EntityManagerFactory entityManagerFactory;
 
-    public void close( @Disposes EntityManager entityManager )
-    {
-        entityManager.close() ;
-    }
+//    @Produces
+//    @RequestScoped
+//    public EntityManager getEntityManager() {
+//        return entityManagerFactory.createEntityManager();
+//    }
+//
+//    public void close( @Disposes EntityManager entityManager )
+//    {
+//        entityManager.close() ;
+//    }
 }

@@ -53,7 +53,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     @Override
     public boolean updateAddressType(AddressTypeDTO addressTypeDTO) {
         if (Optional.ofNullable(addressTypeDTO).isPresent() && CmsUtil.isNumPresent(addressTypeDTO.getId())) {
-            Optional<AddressType> addressTypeOptional = addressTypeRepository.findById(addressTypeDTO.getId());
+            Optional<AddressType> addressTypeOptional = addressTypeRepository.findOptionalBy(addressTypeDTO.getId());
             if (addressTypeOptional.isPresent()) {
                 AddressType addressType = addressTypeOptional.get();
                 if (!CmsUtil.isNull(addressTypeDTO.getDeleted()) && addressTypeDTO.getDeleted().equals("Y")) {
@@ -80,7 +80,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
 
     @Override
     public AddressTypeDTO fetchAddressTypeById(long id) {
-        Optional<AddressType> optionalAddressType = addressTypeRepository.findById(id);
+        Optional<AddressType> optionalAddressType = addressTypeRepository.findOptionalBy(id);
         if(optionalAddressType.isEmpty()) {
             throw new DataNotFoundException(CmsExceptionUtil.composeExceptionMessage("No address type data found for id: ", id));
         }
