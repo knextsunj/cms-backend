@@ -99,7 +99,7 @@ public class AddressServiceImpl implements AddressService {
 
         var status = false;
 
-        Optional<AddressType> optionalAddressType = addressTypeRepository.findById(addressDTO.addressTypeId());
+        Optional<AddressType> optionalAddressType = addressTypeRepository.findById(addressDTO.getAddressTypeId());
         Optional<City> optionalCity = cityRepository.findById(addressDTO.cityId());
         Optional<State> optionalState = stateRepository.findById(addressDTO.stateId());
         Optional<Country> optionalCountry = countryRepository.findById(addressDTO.countryId());

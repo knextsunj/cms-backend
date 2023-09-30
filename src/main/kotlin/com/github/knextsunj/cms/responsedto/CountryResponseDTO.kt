@@ -2,7 +2,6 @@ package com.github.knextsunj.cms.responsedto
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-@JvmRecord
 data class CountryResponseDTO(
     @JsonProperty("serialNo") val serialNo: Long,
     @JsonProperty("id") val id: Long,
