@@ -9,7 +9,6 @@ import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 
 
-//@Component("addressTypeStatusValidationService")
 @RequestScoped
 @AddressTypeValidationService
 open class AddressTypeValidationServiceImpl:GenericValidationService {

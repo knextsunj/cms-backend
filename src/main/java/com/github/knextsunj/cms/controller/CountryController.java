@@ -1,6 +1,5 @@
 package com.github.knextsunj.cms.controller;
 
-import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.CountryDTO;
 import com.github.knextsunj.cms.responsedto.CountryResponseDTO;
 import com.github.knextsunj.cms.service.CountryService;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Stateless
 @Path("/country")
-@JWTRequired
 public class CountryController {
 
     @Inject

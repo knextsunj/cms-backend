@@ -1,17 +1,12 @@
 package com.github.knextsunj.cms.mapper;
 
-import com.github.knextsunj.cms.domain.Country;
-import com.github.knextsunj.cms.util.CmsUtil;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-
 import com.github.knextsunj.cms.domain.State;
 import com.github.knextsunj.cms.dto.StateDTO;
+import com.github.knextsunj.cms.util.CmsUtil;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Optional;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.CDI)

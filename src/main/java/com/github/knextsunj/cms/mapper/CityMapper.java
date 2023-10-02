@@ -1,9 +1,7 @@
 package com.github.knextsunj.cms.mapper;
 
 import com.github.knextsunj.cms.domain.City;
-import com.github.knextsunj.cms.domain.State;
 import com.github.knextsunj.cms.dto.CityDTO;
-import com.github.knextsunj.cms.dto.StateDTO;
 import com.github.knextsunj.cms.util.CmsUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;

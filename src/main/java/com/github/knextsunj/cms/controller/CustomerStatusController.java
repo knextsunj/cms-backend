@@ -1,6 +1,5 @@
 package com.github.knextsunj.cms.controller;
 
-import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.CustomerStatusDTO;
 import com.github.knextsunj.cms.service.CustomerStatusService;
 
@@ -12,7 +11,6 @@ import java.util.List;
 
 @Stateless
 @Path("/customerstatus")
-@JWTRequired
 public class CustomerStatusController {
 
     @Inject

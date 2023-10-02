@@ -1,6 +1,5 @@
 package com.github.knextsunj.cms.controller;
 
-import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.UserPreferenceDTO;
 import com.github.knextsunj.cms.service.UserPreferenceService;
 
@@ -11,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/userpreferences")
-@JWTRequired
 public class UserPreferencesController {
 
     @Inject
@@ -24,7 +22,6 @@ public class UserPreferencesController {
     public UserPreferenceDTO fetchUserPreferences(@PathParam("username") String username) {
         return userPreferenceService.retrieveUserPreferences(username);
     }
-
 }
 
 

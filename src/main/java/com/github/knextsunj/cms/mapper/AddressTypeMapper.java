@@ -1,9 +1,7 @@
 package com.github.knextsunj.cms.mapper;
 
 import com.github.knextsunj.cms.domain.AddressType;
-import com.github.knextsunj.cms.domain.CustomerStatus;
 import com.github.knextsunj.cms.dto.AddressTypeDTO;
-import com.github.knextsunj.cms.dto.CustomerStatusDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;

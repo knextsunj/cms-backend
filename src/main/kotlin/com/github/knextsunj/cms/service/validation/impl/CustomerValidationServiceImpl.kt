@@ -9,7 +9,6 @@ import com.github.knextsunj.cms.util.CmsUtil
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 
-//@Component("customerValidationService")
 @RequestScoped
 @CustomerValidationService
 open class CustomerValidationServiceImpl: GenericValidationService {

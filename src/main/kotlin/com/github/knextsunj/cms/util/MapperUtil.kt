@@ -3,11 +3,9 @@ package com.github.knextsunj.cms.util
 import com.github.knextsunj.cms.domain.*
 import com.github.knextsunj.cms.dto.AddressDTO
 import com.github.knextsunj.cms.dto.CustomerDTO
-import com.github.knextsunj.cms.dto.UserPreferenceDTO
 import com.github.knextsunj.cms.internalto.AddressDetailsTO
 import com.github.knextsunj.cms.repository.AddressRepository
 import java.time.LocalDateTime
-
 
 
 open class MapperUtil {
@@ -61,7 +59,7 @@ open class MapperUtil {
                 customer.deleted = customerDTO.deleted;
             }
 
-            if(!CmsUtil.isNull(customerDTO.dob) && !customerDTO.dob.equals(customer.dateOfBirth)) {
+            if(!CmsUtil.isNull(customerDTO.dob) && !customerDTO.dob?.equals(customer.dateOfBirth)!!) {
                 customer.dateOfBirth = customerDTO.dob;
             }
 
@@ -73,7 +71,7 @@ open class MapperUtil {
                 customer.gender = customerDTO.gender;
             }
 
-            if(!CmsUtil.isNull(customerDTO.mobileNo) && !customerDTO.mobileNo.equals(customer.mobileNo)) {
+            if(!CmsUtil.isNull(customerDTO.mobileNo) && !customerDTO.mobileNo?.equals(customer.mobileNo)!!) {
                 customer.mobileNo = customerDTO.mobileNo;
             }
 

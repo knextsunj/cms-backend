@@ -1,8 +1,5 @@
 package com.github.knextsunj.cms.controller;
 
-import java.util.List;
-
-import com.github.knextsunj.cms.annotation.JWTRequired;
 import com.github.knextsunj.cms.dto.StateDTO;
 import com.github.knextsunj.cms.service.StateService;
 
@@ -10,10 +7,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 @Stateless
 @Path("/state")
-@JWTRequired
 public class StateController {
 
 	@Inject

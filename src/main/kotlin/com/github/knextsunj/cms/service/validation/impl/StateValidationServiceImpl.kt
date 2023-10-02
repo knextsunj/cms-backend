@@ -9,7 +9,6 @@ import com.github.knextsunj.cms.util.CmsUtil
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
 
-//@Component("stateValidationService")
 @RequestScoped
 @StateValidationService
 open class StateValidationServiceImpl:GenericValidationService {

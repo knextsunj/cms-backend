@@ -23,11 +23,11 @@ import java.time.LocalDate
 
 
 data class CustomerDTO(
-    @field:JsonProperty("id") @param:JsonProperty("id") val id: Long, @field:JsonProperty(
+    @field:JsonProperty("id") @param:JsonProperty("id") val id: Long?, @field:JsonProperty(
         "name"
-    ) @param:JsonProperty("name") val name: String, @field:JsonProperty(
+    ) @param:JsonProperty("name") val name: String?, @field:JsonProperty(
         "deleted"
-    ) @param:JsonProperty("deleted") val deleted: String, @field:JsonProperty(
+    ) @param:JsonProperty("deleted") val deleted: String?, @field:JsonProperty(
         "dob"
     ) @field:JsonDeserialize(using = LocalDateDeserializer::class) @field:JsonFormat(
         pattern = "dd/MM/yyyy"
@@ -35,13 +35,13 @@ data class CustomerDTO(
         using = LocalDateSerializer::class
     ) @param:JsonFormat(pattern = "dd/MM/yyyy") @param:JsonDeserialize(
         using = LocalDateDeserializer::class
-    ) @param:JsonProperty("dob") val dob: LocalDate, @field:JsonProperty(
+    ) @param:JsonProperty("dob") val dob: LocalDate?, @field:JsonProperty(
         "gender"
-    ) @param:JsonProperty("gender") val gender: String, @field:JsonProperty(
+    ) @param:JsonProperty("gender") val gender: String?, @field:JsonProperty(
         "mobileNo"
-    ) @param:JsonProperty("mobileNo") val mobileNo: Long, @field:JsonProperty(
+    ) @param:JsonProperty("mobileNo") val mobileNo: Long?, @field:JsonProperty(
         "emailAddress"
-    ) @param:JsonProperty("emailAddress") val emailAddress: String, @field:JsonProperty(
+    ) @param:JsonProperty("emailAddress") val emailAddress: String?, @field:JsonProperty(
         "customerStatusDescr"
-    ) @param:JsonProperty("customerStatusDescr") val customerStatusDescr: String
+    ) @param:JsonProperty("customerStatusDescr") val customerStatusDescr: String?
 )
