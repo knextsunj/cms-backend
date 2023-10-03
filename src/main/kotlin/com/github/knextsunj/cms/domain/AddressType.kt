@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.domain
 
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -9,6 +10,7 @@ import javax.persistence.*
     NamedQuery(name = "AddressType.findAddressTypeByName", query = "select addresstype from AddressType addresstype where addresstype.name=:name"),
     NamedQuery(name = "AddressType.findAllAddressTypesByDeleted", query = "select addresstype from AddressType addresstype where addresstype.deleted=:deleted")
 )
+@DynamicUpdate
 open class AddressType {
 
     @Id

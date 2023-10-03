@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.domain
 
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -10,6 +11,7 @@ import javax.persistence.*
     query = "select state from State state JOIN FETCH state.country where state.country.id=:countryId and state.deleted=:deleted"
 )
 @NamedQuery(name = "state.findStateByName", query = "select state from State state where state.name=:name")
+@DynamicUpdate
 open class State {
 
     @Id

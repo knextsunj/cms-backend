@@ -1,5 +1,6 @@
 package com.github.knextsunj.cms.domain
 
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -9,6 +10,7 @@ import javax.persistence.*
     NamedQuery(name = "Country.findByName", query = "select country from Country country where country.name=:name"),
     NamedQuery(name = "Country.findAllCountriesByDeleted", query= "select country from Country country where country.deleted=:deleted")
 )
+@DynamicUpdate
 open class Country {
 
     @Id
