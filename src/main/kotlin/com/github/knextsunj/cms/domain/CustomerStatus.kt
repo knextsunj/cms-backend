@@ -1,6 +1,5 @@
 package com.github.knextsunj.cms.domain
 
-import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -10,7 +9,6 @@ import javax.persistence.*
     NamedQuery(name = "CustomerStatus.findCustomerStatusByName", query = "select customerstatus from CustomerStatus customerstatus where customerstatus.name=:name"),
     NamedQuery(name = "CustomerStatus.findAllCustomerStatusByDeleted", query = "select customerstatus from CustomerStatus customerstatus where customerstatus.deleted=:deleted")
 )
-@DynamicUpdate
 open class CustomerStatus {
 
     @Id

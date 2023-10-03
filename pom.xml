@@ -197,7 +197,13 @@
             <artifactId>shiro-jaxrs</artifactId>
             <version>${shiro.version}</version>
         </dependency>
-<!--        <dependency>-->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--        <dependency>-->
 <!--            <groupId>org.springframework.data</groupId>-->
 <!--            <artifactId>spring-data-jpa</artifactId>-->
 <!--        </dependency>-->
@@ -206,7 +212,54 @@
 <!--            <artifactId>spring-security-crypto</artifactId>-->
 <!--            <version>5.5.1</version>-->
 <!--        </dependency>-->
-
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.common</groupId>
+            <artifactId>hibernate-commons-annotations</artifactId>
+            <version>5.1.2.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.6.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.6.0.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.2.5.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <version>3.4.2.Final</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.29.1-GA</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -320,31 +373,6 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!-- Enable Liberty Maven plugin at here -->
-<!--            <plugin>-->
-<!--                <groupId>io.openliberty.tools</groupId>-->
-<!--                <artifactId>liberty-maven-plugin</artifactId>-->
-<!--                <version>3.7.1</version>-->
-<!--                <configuration>-->
-<!--                    <appsDirectory>apps</appsDirectory>-->
-<!--                    <installAppPackages>spring-boot-project</installAppPackages>-->
-<!--                    <include>minify,runnable</include>-->
-<!--                    <packageName>cms</packageName>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>package-server</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>create</goal>-->
-<!--                            <goal>install-feature</goal>-->
-<!--                            <goal>deploy</goal>-->
-<!--                            <goal>package</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
         </plugins>
     </build>
 </project>
