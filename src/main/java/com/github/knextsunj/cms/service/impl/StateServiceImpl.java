@@ -41,16 +41,16 @@ public class StateServiceImpl implements StateService {
 
 	@Override
 	public boolean saveState(StateDTO stateDTO) {
-		if (!CmsUtil.isNull(stateDTO) && !CmsUtil.isNull(stateDTO.name()) && CmsUtil.isNumPresent(stateDTO.countryId())) {
+		if (!CmsUtil.isNull(stateDTO) && !CmsUtil.isNull(stateDTO.getName()) && CmsUtil.isNumPresent(stateDTO.getCountryId())) {
 
 
 
-			if (stateRepository.count()!=0L && !genericValidationService.deDup(stateDTO.name())) {
-				throw new ValidationFailureException("State with given name: " + stateDTO.name() + " already registered");
+			if (stateRepository.count()!=0L && !genericValidationService.deDup(stateDTO.getName())) {
+				throw new ValidationFailureException("State with given name: " + stateDTO.getName() + " already registered");
 			}
 
 
-		Optional<Country> countryOptional = countryRepository.findById(stateDTO.countryId());
+		Optional<Country> countryOptional = countryRepository.findById(stateDTO.getCountryId());
 		if(countryOptional.isPresent()) {
 
 			State newState = stateMapper.setDates(stateMapper.fromStateDTO(stateDTO));
@@ -61,7 +61,7 @@ public class StateServiceImpl implements StateService {
 			}
 		}
 		else {
-			throw new DataNotFoundException("Unable to save state with name::"+stateDTO.name()+", required country mapping");
+			throw new DataNotFoundException("Unable to save state with name::"+stateDTO.getName()+", required country mapping");
 		}
 		}
 		return false;
@@ -69,15 +69,15 @@ public class StateServiceImpl implements StateService {
 
 	@Override
 	public boolean updateState(StateDTO stateDTO) {
-		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.id())) {
-			Optional<State> optionalState = stateRepository.findById(stateDTO.id());
+		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.getId())) {
+			Optional<State> optionalState = stateRepository.findById(stateDTO.getId());
 			if(optionalState.isPresent()) {
 				State state = optionalState.get();
-				if(!CmsUtil.isNull(stateDTO.name())) {
-					state.setName(stateDTO.name());
+				if(!CmsUtil.isNull(stateDTO.getName())) {
+					state.setName(stateDTO.getName());
 				}
-				if(!CmsUtil.isNull(stateDTO.deleted()) && stateDTO.deleted().equals("Y")) {
-					state.setDeleted(stateDTO.deleted());
+				if(!CmsUtil.isNull(stateDTO.getDeleted()) && stateDTO.getDeleted().equals("Y")) {
+					state.setDeleted(stateDTO.getDeleted());
 				}
 				state.setUpdatedDate(LocalDateTime.now());
 				stateRepository.save(state);

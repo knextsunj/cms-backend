@@ -40,11 +40,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO) {
-        if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.name())) {
-            if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.name())) {
-                throw new ValidationFailureException("Customer with given name: " + customerDTO.name() + " already registered");
+        if (!CmsUtil.isNull(customerDTO) && !CmsUtil.isNull(customerDTO.getName())) {
+            if (customerRepository.count() != 0L && !genericValidationService.deDup(customerDTO.getName())) {
+                throw new ValidationFailureException("Customer with given name: " + customerDTO.getName() + " already registered");
             }
-            CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName(customerDTO.customerStatusDescr());
+            CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName(customerDTO.getCustomerStatusDescr());
             Customer newCustomer = customerMapper.setDates(customerMapper.fromCustomerDTO(customerDTO));
             newCustomer.setCustomerStatus(customerStatus);
             Customer savedCustomer = customerRepository.save(newCustomer);
@@ -58,22 +58,22 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO) {
-        if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.id())) {
-            Optional<Customer> customerOptional = customerRepository.findById(customerDTO.id());
+        if (Optional.ofNullable(customerDTO).isPresent() && CmsUtil.isNumPresent(customerDTO.getId())) {
+            Optional<Customer> customerOptional = customerRepository.findById(customerDTO.getId());
             if (customerOptional.isPresent()) {
                 Customer customer = customerOptional.get();
-                if (!CmsUtil.isNull(customerDTO.deleted()) && customerDTO.deleted().equals("Y")) {
+                if (!CmsUtil.isNull(customerDTO.getDeleted()) && customerDTO.getDeleted().equals("Y")) {
                     customer.setDeleted("Y");
                 }
 
-                if (!CmsUtil.isNull(customerDTO.customerStatusDescr()) && customerDTO.customerStatusDescr().equals("INACTIVE")) {
+                if (!CmsUtil.isNull(customerDTO.getCustomerStatusDescr()) && customerDTO.getCustomerStatusDescr().equals("INACTIVE")) {
                     CustomerStatus customerStatus = customerStatusRepository.findCustomerStatusByName("INACTIVE");
                     if (CmsUtil.isNull(customerStatus)) {
                         customer.setCustomerStatus(customerStatus);
                     }
                 }
-                if (!CmsUtil.isNull(customerDTO.name())) {
-                    customer.setName(customerDTO.name());
+                if (!CmsUtil.isNull(customerDTO.getName())) {
+                    customer.setName(customerDTO.getName());
                 }
 
                 Customer updatedCustomer = customerRepository.save(customerMapper.setDates(MapperUtil.updateCustomerDetails(customerDTO,customer)));

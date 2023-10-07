@@ -36,8 +36,8 @@ public interface CountryMapper {
     }
 
     default CountryResponseDTO buildCountryResponseDTO(CountryDTO countryDTO, Long serialNo) {
-        return CountryResponseDTOBuilder.countryResponseDTOBuilder().setId(countryDTO.id()).setName(countryDTO.name())
-                .setDeleted(countryDTO.deleted()).setSerialNo(serialNo).build();
+        return CountryResponseDTOBuilder.countryResponseDTOBuilder().setId(countryDTO.getId()).setName(countryDTO.getName())
+                .setDeleted(countryDTO.getDeleted()).setSerialNo(serialNo).build();
     }
 
 }

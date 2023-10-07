@@ -14,8 +14,9 @@ import javax.persistence.*
 open class Country {
 
     @Id
-    @SequenceGenerator(name = "COUNTRY_ID_SEQUENCE", sequenceName = "COUNTRY_ID_SEQUENCE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COUNTRY_ID_SEQUENCE")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @SequenceGenerator(name = "COUNTRY_ID_SEQUENCE", sequenceName = "COUNTRY_ID_SEQUENCE", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COUNTRY_ID_SEQUENCE")
     open var id: Long? = null
 
     @Column(name = "name")

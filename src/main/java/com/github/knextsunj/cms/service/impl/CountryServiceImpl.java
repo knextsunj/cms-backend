@@ -39,9 +39,9 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public boolean saveCountry(CountryDTO countryDTO) {
 
-        if (!CmsUtil.isNull(countryDTO) && !CmsUtil.isNull(countryDTO.name())) {
-            if (countryRepository.count()!=0L && !genericValidationService.deDup(countryDTO.name())) {
-                throw new ValidationFailureException("Country with given name: " + countryDTO.name() + " already registered");
+        if (!CmsUtil.isNull(countryDTO) && !CmsUtil.isNull(countryDTO.getName())) {
+            if (countryRepository.count()!=0L && !genericValidationService.deDup(countryDTO.getName())) {
+                throw new ValidationFailureException("Country with given name: " + countryDTO.getName() + " already registered");
             }
 
             Country savedCountry = countryRepository.save(countryMapper.setDates(countryMapper.fromCountryDTO(countryDTO)));
@@ -54,15 +54,15 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public boolean updateCountry(CountryDTO countryDTO) {
-        if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.id())) {
-            Optional<Country> countryOptional = countryRepository.findById(countryDTO.id());
+        if (Optional.ofNullable(countryDTO).isPresent() && CmsUtil.isNumPresent(countryDTO.getId())) {
+            Optional<Country> countryOptional = countryRepository.findById(countryDTO.getId());
             if (countryOptional.isPresent()) {
                 Country country = countryOptional.get();
-                if (!CmsUtil.isNull(countryDTO.deleted()) && countryDTO.deleted().equals("Y")) {
+                if (!CmsUtil.isNull(countryDTO.getDeleted()) && countryDTO.getDeleted().equals("Y")) {
                     country.setDeleted("Y");
                 }
-                if(!CmsUtil.isNull(countryDTO.name()))
-                country.setName(countryDTO.name());
+                if(!CmsUtil.isNull(countryDTO.getName()))
+                country.setName(countryDTO.getName());
                 Country updatedCountry = countryRepository.save(countryMapper.setDates(country));
                 if (updatedCountry != null)
                     return true;

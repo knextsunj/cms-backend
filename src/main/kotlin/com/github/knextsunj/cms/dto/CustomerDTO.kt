@@ -27,7 +27,7 @@ data class CustomerDTO(
         "name"
     ) @param:JsonProperty("name") val name: String, @field:JsonProperty(
         "deleted"
-    ) @param:JsonProperty("deleted") val deleted: String, @field:JsonProperty(
+    ) @param:JsonProperty("deleted") val deleted: String?, @field:JsonProperty(
         "dob"
     ) @field:JsonDeserialize(using = LocalDateDeserializer::class) @field:JsonFormat(
         pattern = "dd/MM/yyyy"

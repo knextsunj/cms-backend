@@ -40,14 +40,14 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean saveCity(CityDTO cityDTO) {
-        if (!CmsUtil.isNull(cityDTO) && !CmsUtil.isNull(cityDTO.name()) && CmsUtil.isNumPresent(cityDTO.stateId())) {
+        if (!CmsUtil.isNull(cityDTO) && !CmsUtil.isNull(cityDTO.getName()) && CmsUtil.isNumPresent(cityDTO.getStateId())) {
 
-            if (cityRepository.count()!=0L && !genericValidationService.deDup(cityDTO.name())) {
-                throw new ValidationFailureException("State with given name: " + cityDTO.name() + " already registered");
+            if (cityRepository.count()!=0L && !genericValidationService.deDup(cityDTO.getName())) {
+                throw new ValidationFailureException("State with given name: " + cityDTO.getName() + " already registered");
             }
 
 
-            Optional<State> stateOptional = stateRepository.findById(cityDTO.stateId());
+            Optional<State> stateOptional = stateRepository.findById(cityDTO.getStateId());
             if(stateOptional.isPresent()) {
 
                 City newCity = cityMapper.setDates(cityMapper.fromCityDTO(cityDTO));
@@ -58,7 +58,7 @@ public class CityServiceImpl implements CityService {
                 }
             }
             else {
-                throw new DataNotFoundException("Unable to save state with name::"+cityDTO.name()+", required country mapping");
+                throw new DataNotFoundException("Unable to save state with name::"+cityDTO.getName()+", required country mapping");
             }
         }
         return false;
@@ -66,15 +66,15 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean updateCity(CityDTO cityDTO) {
-        if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.id())) {
-            Optional<City> optionalCity = cityRepository.findById(cityDTO.id());
+        if (Optional.ofNullable(cityDTO).isPresent() && CmsUtil.isNumPresent(cityDTO.getId())) {
+            Optional<City> optionalCity = cityRepository.findById(cityDTO.getId());
             if(optionalCity.isPresent()) {
                 City city = optionalCity.get();
-                if(!CmsUtil.isNull(cityDTO.name())){
-                    city.setName(cityDTO.name());
+                if(!CmsUtil.isNull(cityDTO.getName())){
+                    city.setName(cityDTO.getName());
                 }
-                if(!CmsUtil.isNull(cityDTO.deleted()) && cityDTO.deleted().equals("Y")) {
-                    city.setDeleted(cityDTO.deleted());
+                if(!CmsUtil.isNull(cityDTO.getDeleted()) && cityDTO.getDeleted().equals("Y")) {
+                    city.setDeleted(cityDTO.getDeleted());
                 }
                 city.setUpdatedDate(LocalDateTime.now());
                 cityRepository.save(city);

@@ -17,9 +17,9 @@ public abstract class CityMapper {
 
     public City fromCityDTO(CityDTO cityDTO) {
         City city = new City();
-        city.setName(cityDTO.name());
-        if(!CmsUtil.isNull(cityDTO.deleted())) {
-            city.setDeleted(cityDTO.deleted());
+        city.setName(cityDTO.getName());
+        if(!CmsUtil.isNull(cityDTO.getDeleted())) {
+            city.setDeleted(cityDTO.getDeleted());
         }
         return city;
     }

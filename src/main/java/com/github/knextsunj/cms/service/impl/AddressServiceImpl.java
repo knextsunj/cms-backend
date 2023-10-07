@@ -60,12 +60,12 @@ public class AddressServiceImpl implements AddressService {
     public boolean updateAddress(AddressDTO addressDTO) {
 
         var status = false;
-        if (!CmsUtil.isNull(addressDTO) && !CmsUtil.isNull(addressDTO.id())) {
+        if (!CmsUtil.isNull(addressDTO) && !CmsUtil.isNull(addressDTO.getId())) {
 
-            Optional<Address> optionalAddress = addressRepository.findById(addressDTO.id());
+            Optional<Address> optionalAddress = addressRepository.findById(addressDTO.getId());
             if (optionalAddress.isPresent()) {
                 Address address = optionalAddress.get();
-                if (!CmsUtil.isNull(addressDTO.deleted()) && addressDTO.deleted().equals("Y")) {
+                if (!CmsUtil.isNull(addressDTO.getDeleted()) && addressDTO.getDeleted().equals("Y")) {
                     address.setDeleted("Y");
                     Address updatedAddress = addressRepository.save(address);
                     if (null != updatedAddress) {
@@ -100,10 +100,10 @@ public class AddressServiceImpl implements AddressService {
         var status = false;
 
         Optional<AddressType> optionalAddressType = addressTypeRepository.findById(addressDTO.getAddressTypeId());
-        Optional<City> optionalCity = cityRepository.findById(addressDTO.cityId());
-        Optional<State> optionalState = stateRepository.findById(addressDTO.stateId());
-        Optional<Country> optionalCountry = countryRepository.findById(addressDTO.countryId());
-        Optional<Customer> optionalCustomer = customerRepository.findById(addressDTO.countryId());
+        Optional<City> optionalCity = cityRepository.findById(addressDTO.getCityId());
+        Optional<State> optionalState = stateRepository.findById(addressDTO.getStateId());
+        Optional<Country> optionalCountry = countryRepository.findById(addressDTO.getCountryId());
+        Optional<Customer> optionalCustomer = customerRepository.findById(addressDTO.getCustomerId());
 
 
         if (optionalAddressType.isPresent() && optionalCity.isPresent() && optionalState.isPresent() && optionalCountry.isPresent() && optionalCustomer.isPresent()) {
