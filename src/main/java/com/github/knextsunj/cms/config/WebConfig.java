@@ -1,20 +1,17 @@
 package com.github.knextsunj.cms.config;
 
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Configuration
@@ -26,13 +23,33 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
+//                .indentOutput(true)
+////                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+//                .dateFormat(new SimpleDateFormat("dd/MM/yyyy"))
+//                .modulesToInstall(new ParameterNamesModule());
+//        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        converters.add(mappingJackson2HttpMessageConverter());
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+
+        SimpleModule pairModule = new SimpleModule();
+        pairModule.addSerializer(Pair.class, new PairSerializer());
+        pairModule.addDeserializer(Pair.class, new PairDeserializer());
+
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()
                 .indentOutput(true)
-//                .dateFormat(new SimpleDateFormat("yyyy-MM-dd"))
                 .dateFormat(new SimpleDateFormat("dd/MM/yyyy"))
                 .modulesToInstall(new ParameterNamesModule());
-        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter =  new MappingJackson2HttpMessageConverter(builder.build());
+        mappingJackson2HttpMessageConverter.getObjectMapper().registerModule(pairModule);
+
+        return mappingJackson2HttpMessageConverter;
     }
+
+
 
 //    @Bean
 //    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {

@@ -13,6 +13,8 @@ import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
 
 
     @Override
+    @CacheEvict(cacheNames = "allCustomerStatus",allEntries = true)
     public boolean saveCustomerStatus(CustomerStatusDTO customerStatusDTO) {
         if (!CmsUtil.isNull(customerStatusDTO) && !CmsUtil.isNull(customerStatusDTO.getName())) {
             if (customerStatusRepository.count()!=0L && !genericValidationService.deDup(customerStatusDTO.getName())) {
@@ -50,6 +53,7 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "allCustomerStatus",allEntries = true)
     public boolean updateCustomerStatus(CustomerStatusDTO customerStatusDTO) {
         if (Optional.ofNullable(customerStatusDTO).isPresent() && CmsUtil.isNumPresent(customerStatusDTO.getId())) {
             Optional<CustomerStatus> customerStatusOptional = customerStatusRepository.findById(customerStatusDTO.getId());
@@ -70,6 +74,7 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
     }
 
     @Override
+    @Cacheable(cacheNames = "allCustomerStatus")
     public List<CustomerStatusDTO> findAllCustomerStatus() {
 
         Function<CustomerStatus,CustomerStatusDTO> function = (customerStatus)->{

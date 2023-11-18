@@ -3,15 +3,22 @@ package com.github.knextsunj.cms.service.impl;
 import com.github.knextsunj.cms.builder.AddressDetailsTOBuilder;
 import com.github.knextsunj.cms.domain.*;
 import com.github.knextsunj.cms.dto.AddressDTO;
+import com.github.knextsunj.cms.event.publisher.AddressKYCEventPublisher;
 import com.github.knextsunj.cms.exception.BusinessException;
 import com.github.knextsunj.cms.internalto.AddressDetailsTO;
 import com.github.knextsunj.cms.mapper.AddressMapper;
 import com.github.knextsunj.cms.repository.*;
 import com.github.knextsunj.cms.service.AddressService;
+import com.github.knextsunj.cms.service.messaging.JmsProducer;
 import com.github.knextsunj.cms.util.CmsUtil;
 import com.github.knextsunj.cms.util.MapperUtil;
 import com.github.knextsunj.cms.util.ValidationUtil;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -45,19 +52,24 @@ public class AddressServiceImpl implements AddressService {
 
     private ValidationUtil validationUtil;
 
+    @Autowired
+    private AddressKYCEventPublisher addressKYCEventPublisher;
+
     @Override
-    public boolean saveAddress(AddressDTO addressDTO) {
+    @CacheEvict(cacheNames = "allAddresses",allEntries = true)
+    public boolean saveAddress(AddressDTO addressDTO,String authHeader) {
 
         if (validationUtil.checkAddressParams(addressDTO)) {
 
-            processSave(null, addressDTO, false);
+            processSave(null, addressDTO, false, authHeader);
         }
 
         return false;
     }
 
     @Override
-    public boolean updateAddress(AddressDTO addressDTO) {
+    @CacheEvict(cacheNames = "allAddresses",key="#addressDTO.customerId")
+    public boolean updateAddress(AddressDTO addressDTO,String authHeader) {
 
         var status = false;
         if (!CmsUtil.isNull(addressDTO) && !CmsUtil.isNull(addressDTO.getId())) {
@@ -69,10 +81,12 @@ public class AddressServiceImpl implements AddressService {
                     address.setDeleted("Y");
                     Address updatedAddress = addressRepository.save(address);
                     if (null != updatedAddress) {
+                        ImmutablePair pair = ImmutablePair.of(String.valueOf(updatedAddress.getId()),authHeader);
+                        addressKYCEventPublisher.publishAdressKYCEvent(pair);
                         status = true;
                     }
                 } else {
-                    status = processSave(address, addressDTO, true);
+                    status = processSave(address, addressDTO, true,authHeader);
                 }
             }
         }
@@ -80,6 +94,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Cacheable(cacheNames ="allAddresses",key="#customerId")
     public List<AddressDTO> fetchAllAddress(Long customerId) {
         if (!CmsUtil.isNull(customerId)) {
             return addressRepository.findAddressByCustomerIdAndDeleted(customerId,"N").stream().map((address) -> {
@@ -95,7 +110,7 @@ public class AddressServiceImpl implements AddressService {
         this.validationUtil = new ValidationUtil();
     }
 
-    private boolean processSave(Address address, AddressDTO addressDTO, boolean toUpdate) {
+    private boolean processSave(Address address, AddressDTO addressDTO, boolean toUpdate,String authHeader) {
 
         var status = false;
 
@@ -130,7 +145,12 @@ public class AddressServiceImpl implements AddressService {
                         .build();
 
             }
-            status = MapperUtil.save(toUpdate, addressDetailsTO, addressRepository);
+            Address savedAddress = MapperUtil.save(toUpdate, addressDetailsTO, addressRepository);
+            if(null!=savedAddress) {
+                ImmutablePair pair = ImmutablePair.of(String.valueOf(savedAddress.getId()),authHeader);
+                addressKYCEventPublisher.publishAdressKYCEvent(pair);
+                return true;
+            }
         } else {
             throw new BusinessException(("Unable to save address,mandatory fields not present"));
         }

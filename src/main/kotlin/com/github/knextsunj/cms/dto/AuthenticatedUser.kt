@@ -1,3 +1,5 @@
 package com.github.knextsunj.cms.dto
 
-data class AuthenticatedUser(val user:String?,val role:String?)
+import java.io.Serializable
+
+data class AuthenticatedUser(val user:String?,val role:String?): Serializable

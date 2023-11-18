@@ -33,7 +33,7 @@ open class MapperUtil {
         }
 
         @JvmStatic
-        fun save(toUpdate: Boolean,addressDetailsTO: AddressDetailsTO, addressRepository: AddressRepository):Boolean {
+        fun save(toUpdate: Boolean,addressDetailsTO: AddressDetailsTO, addressRepository: AddressRepository):Address {
 
             if(!toUpdate) {
                 return save(
@@ -81,14 +81,14 @@ open class MapperUtil {
         }
 
         private fun save(address:Address, customer: Customer, city: City, state: State, country: Country,
-                         addressType: AddressType, addressRepository: AddressRepository):Boolean {
+                         addressType: AddressType, addressRepository: AddressRepository):Address {
             address.city = city
             address.state = state
             address.country = country
             address.addressType = addressType
             address.customer = customer
             val savedAddress = addressRepository.save(address)
-            return null!=savedAddress
+            return savedAddress
         }
 
         private  fun buildOrUpdateAddress(addressDTO:AddressDTO,toUpdate:Boolean,address:Address?):Address {

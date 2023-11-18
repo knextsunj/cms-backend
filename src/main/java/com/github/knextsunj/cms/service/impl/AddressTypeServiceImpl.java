@@ -15,6 +15,8 @@ import com.github.knextsunj.cms.util.CmsExceptionUtil;
 import com.github.knextsunj.cms.util.CmsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
 
 
     @Override
+    @CacheEvict(cacheNames = "allAddressTypes",allEntries=true)
     public boolean saveAddressType(AddressTypeDTO addressTypeDTO) {
         if (!CmsUtil.isNull(addressTypeDTO) && !CmsUtil.isNull(addressTypeDTO.getName())) {
             if (addressTypeRepository.count()!=0L && !genericValidationService.deDup(addressTypeDTO.getName())) {
@@ -52,6 +55,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     }
 
     @Override
+    @CacheEvict(cacheNames = "allAddressTypes",allEntries=true)
     public boolean updateAddressType(AddressTypeDTO addressTypeDTO) {
         if (Optional.ofNullable(addressTypeDTO).isPresent() && CmsUtil.isNumPresent(addressTypeDTO.getId())) {
             Optional<AddressType> addressTypeOptional = addressTypeRepository.findById(addressTypeDTO.getId());
@@ -72,6 +76,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     }
 
     @Override
+    @Cacheable(cacheNames ="allAddressTypes")
     public List<AddressTypeDTO> findAllAddressType() {
         Function<AddressType,AddressTypeDTO> function = (addressType)->{
             return addressTypeMapper.toAddressTypeDTO(addressType);
@@ -80,6 +85,7 @@ public class AddressTypeServiceImpl implements AddressTypeService {
     }
 
     @Override
+    @Cacheable(cacheNames = "addressTypeById",key="#id")
     public AddressTypeDTO fetchAddressTypeById(long id) {
         Optional<AddressType> optionalAddressType = addressTypeRepository.findById(id);
         if(optionalAddressType.isEmpty()) {

@@ -1,3 +1,5 @@
 package com.github.knextsunj.cms.dto
 
-data class CountryKeyDTO(val countryId:Long?,val countryName:String?)
+import java.io.Serializable
+
+data class CountryKeyDTO(val countryId:Long?,val countryName:String?): Serializable

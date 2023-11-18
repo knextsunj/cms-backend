@@ -13,6 +13,8 @@ import com.github.knextsunj.cms.repository.CountryRepository;
 import com.github.knextsunj.cms.service.validation.GenericValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.github.knextsunj.cms.domain.State;
@@ -40,6 +42,7 @@ public class StateServiceImpl implements StateService {
 	private GenericValidationService genericValidationService;
 
 	@Override
+	@CacheEvict(cacheNames = "allStatesByCountry",allEntries = true)
 	public boolean saveState(StateDTO stateDTO) {
 		if (!CmsUtil.isNull(stateDTO) && !CmsUtil.isNull(stateDTO.getName()) && CmsUtil.isNumPresent(stateDTO.getCountryId())) {
 
@@ -68,6 +71,7 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
+	@CacheEvict(cacheNames = "allStatesByCountry",allEntries = true)
 	public boolean updateState(StateDTO stateDTO) {
 		if (Optional.ofNullable(stateDTO).isPresent() && CmsUtil.isNumPresent(stateDTO.getId())) {
 			Optional<State> optionalState = stateRepository.findById(stateDTO.getId());
@@ -88,6 +92,7 @@ public class StateServiceImpl implements StateService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = "allStatesByCountry",key="#countryId")
 	public List<StateDTO> findStatesByCountryId(Long countryId) {
 		if (Optional.ofNullable(countryId).isPresent()) {
 			List<State> states = this.stateRepository.findStateByCountryIdAndDeleted(countryId,"N");

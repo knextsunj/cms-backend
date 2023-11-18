@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface CustomerService {
 
-    boolean saveCustomer(CustomerDTO customerDTO);
+    boolean saveCustomer(CustomerDTO customerDTO,String authHeader);
 
-    boolean updateCustomer(CustomerDTO customerDTO);
+    boolean updateCustomer(CustomerDTO customerDTO,String authHeader);
 
     List<CustomerDTO> findAllCustomers();
 
